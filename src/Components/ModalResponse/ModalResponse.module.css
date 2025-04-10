@@ -1,0 +1,37 @@
+.content-modal-response,
+.content-modal-response-body,
+.content-modal-response-footer {
+    background-color: var(--primary-brown) !important;
+    color: white;
+    font-family: var(--secondary-font) !important;
+    font-weight: 700;
+}
+
+.content-modal-response-title {
+    color: white;
+    font-family: var(--secondary-font) !important;
+
+}
+
+.content-modal-response-btn-close {
+    background-color: var(--primary-orange) !important;
+    color: white;
+    font-family: var(--secondary-font) !important;
+    border: none !important;
+    width: 40%;
+}
+
+.btn-close {
+    color: white !important;
+}
+
+.content-modaL-text-logo-b {
+    color: white;
+    font-weight: 900;
+}
+
+.content-modaL-text-logo-c {
+    color: var(--primary-orange);
+    font-weight: 900;
+
+}

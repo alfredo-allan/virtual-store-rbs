@@ -1,0 +1,226 @@
+.custon-header {
+    background-color: var(--primary-black);
+    font-family: var(--font-family) !important;
+    padding: 30px;
+    position: fixed;
+    /* Adiciona o posicionamento fixo */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    /* Garante que o header fique acima de outros elementos */
+}
+
+.logo-content {
+    /* Outros estilos do logo */
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    /* Para centralizar o conteúdo DENTRO do .logo-content, se houver texto */
+}
+
+.logo-content img {
+    /* Estilos da imagem */
+    width: 300px;
+    display: block;
+    /* Para que as margens automáticas funcionem no .logo-content */
+    margin: 0 auto;
+    /* Centraliza a imagem DENTRO do .logo-content */
+    margin-right: 10vh;
+}
+
+@keyframes pulse-animation {
+    0% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.pulse {
+    animation: pulse-animation 2.8s infinite;
+    /* Ajuste a duração e a intensidade conforme necessário */
+}
+
+.content-iteration-user {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+    direction: inherit;
+    margin-left: 5vh;
+    padding: 19px;
+    margin-top: 3vh;
+
+}
+
+.content-search {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+
+.form-control {
+    display: flex;
+    justify-content: center;
+    margin-top: 5vh;
+    width: 460px;
+    max-width: 600px;
+    height: 50px;
+    border: none;
+    outline: none;
+    font-family: var(--font-family) !important;
+    padding-left: 20px;
+}
+
+.nav-link {
+    font-family: var(--font-family) !important;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-search {
+    display: block;
+    background-color: transparent;
+    border: none;
+}
+
+.search-ico {
+    display: block;
+    position: absolute;
+    left: 84vh;
+    top: 65px;
+    width: 30px;
+}
+
+.iteration-header-text {
+    font-family: var(--font-family);
+    font-weight: 400;
+    margin-right: 15px;
+}
+
+.iteration-header {
+    margin-right: 15px;
+}
+
+.user-ico {
+    margin-top: -11px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.btn-logout {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-family: var(--font-family);
+}
+
+.content-item-count {
+    background-color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    color: black;
+    margin-top: -53px;
+    margin-left: 34px;
+    text-decoration: none !important;
+}
+
+.item-count {
+    text-decoration: none !important;
+    text-align: center;
+    padding: 5px;
+}
+
+@media (max-width: 768px) {
+    .logo-content img {
+        width: 200px;
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        margin-left: -25vh;
+    }
+
+    .form-control {
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        max-width: 320px;
+        position: relative;
+        left: 3%;
+
+
+    }
+
+    .custon-header {
+        width: 100%;
+        display: flex;
+        position: relative;
+        height: 200px;
+        padding: 6px 0px 0px
+    }
+
+    .iteration-header-text {
+        display: none;
+    }
+
+    .content-search {
+        width: 100%;
+        position: relative;
+        display: block;
+        margin: 0;
+        align-items: center;
+        padding: 5%;
+        padding-left: 0%;
+    }
+
+    .content-iteration-user {
+        display: flex;
+        margin: 0;
+        justify-content: right;
+        flex-direction: row;
+        margin-top: -197px;
+        margin-left: 25vh;
+    }
+
+    .search-ico {
+        display: flex;
+        position: absolute;
+        left: 300px;
+        top: 36px;
+        width: 30px;
+        z-index: 999;
+    }
+    @keyframes pulse-animation {
+        0% {
+            transform: scale(0.0);
+            opacity: 0;
+        }
+    
+        50% {
+            transform: scale(1.1);
+            opacity: 0.0;
+        }
+    
+        100% {
+            transform: scale(1);
+            opacity: 0;
+        }
+    }
+    
+    .pulse {
+        animation: pulse-animation 0.0s infinite;
+        /* Ajuste a duração e a intensidade conforme necessário */
+    }
+    
+}

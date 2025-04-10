@@ -1,0 +1,89 @@
+.custom-carousel {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 20vh;
+}
+
+.custom-carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.custom-carousel-item {
+    flex: 0 0 100%;
+}
+
+.custom-carousel-item img {
+    width: 100%;
+    display: block;
+    transition: transform 0.5s ease-in-out;
+    /* Adicionamos uma transição para o zoom */
+}
+
+.custom-carousel-item img:hover {
+    transform: scale(1.10);
+    /* Aplica um zoom sutil ao passar o mouse */
+}
+
+.custom-carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ffffff00;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 52px;
+
+}
+
+.custom-carousel-control:first-of-type {
+    left: 0;
+}
+
+.custom-carousel-control:last-of-type {
+    right: 0;
+}
+
+.custom-carousel-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+}
+
+.custom-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: none;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+/* Estilos para Mobile */
+@media (max-width: 768px) {
+    .custom-carousel-item img {
+        height: auto;
+        max-height: 80vh;
+        object-fit: contain;
+    }
+
+    .custom-carousel-control {
+        font-size: 40px;
+        padding: 5px;
+    }
+
+    .custom-indicator {
+        width: 8px;
+        height: 8px;
+        margin: 0 3px;
+    }
+
+    .custom-carousel {
+        margin-top: 0;
+    }
+}

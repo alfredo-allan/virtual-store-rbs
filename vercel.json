@@ -1,0 +1,19 @@
+{
+    "rewrites": [
+        {
+            "source": "/",
+            "destination": "/:path*"
+        }
+    ],
+    "headers": [
+        {
+            "source": "/(.*)",
+            "headers": [
+                {
+                    "key": "Cache-Control",
+                    "value": "s-maxage=1"
+                }
+            ]
+        }
+    ]
+}
