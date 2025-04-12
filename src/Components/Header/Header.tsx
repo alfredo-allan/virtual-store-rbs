@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Header.module.css';
 import styles from './Header.module.css';
-import searchIcon from '../../Assets/Img/magnifier.png';
 import userIco from '../../Assets/Img/profile-user.png';
 import suportIco from '../../Assets/Img/suport.png';
 import bagIco from '../../Assets/Img/add-to-cart.png';
@@ -10,6 +9,8 @@ import { useAuth } from '../../Contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useShoppingBag } from '../../Contexts/ShoppingBagContext'; // Importe o hook do contexto
 import logoContent from '../../Assets/Img/rbs_logo.png';
+import SideMenu from '../../Components/SideMenu/SideMenu'; // Certifique-se do caminho correto
+import menuIco from '../../Assets/Img/menu.png'; // Importe o ícone de menu
 
 interface HeaderProps {
     // onBagIconClick?: () => void; // Remova ou deixe como está, a lógica agora está interna
@@ -22,7 +23,9 @@ function Header({ /* onBagIconClick */ }: HeaderProps) {
     const { bagItems } = useShoppingBag(); // Acesse os itens da sacola
     const itemCount = bagItems.reduce((sum, item) => sum + item.quantity, 0);
     const logoImageRef = useRef<HTMLDivElement>(null); // Mudamos para HTMLDivElement pois o onClick está na div
-    const [isScrolling, setIsScrolling] = useState(false);
+    const logoRef = useRef<HTMLImageElement>(null);
+    const [isScrolling, setIsScrolling] = useState(false); // Declaração única de isScrolling e setIsScrolling
+    const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
     const handleLogout = () => {
         logout();
@@ -61,36 +64,51 @@ function Header({ /* onBagIconClick */ }: HeaderProps) {
         }
     }, [isScrolling]);
 
+    const handleOpenMenu = () => {
+        setIsSideMenuOpen(true);
+    };
+
+    const handleCloseMenu = () => {
+        setIsSideMenuOpen(false);
+    };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolling(true);
+            const timer = setTimeout(() => setIsScrolling(false), 200);
+            return () => clearTimeout(timer);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    useEffect(() => {
+        if (logoRef.current) {
+            logoRef.current.classList.toggle(styles.pulse, isScrolling);
+        }
+    }, [isScrolling]);
     return (
         <header className={styles['custon-header']}>
+            <img
+                src={menuIco}
+                alt="Menu"
+                className={styles['mobile-menu-icon']}
+                onClick={handleOpenMenu}
+            />
             <div className="container">
                 <nav className="navbar navbar-expand-lg">
                     <div id="navbarNav">
                         <ul className="navbar-nav ml-auto">
-                            <div
-                                ref={logoImageRef}
-                                className={styles['logo-content']}
-                                onClick={navigateToHome}
-                            >
-                                <img src={logoContent} alt="Logo RBS" />
-                            </div>
-                            <div className={styles['content-search']}>
-                                <li className="nav-item search-input-mobile" >
-                                    <form className="form-inline my-2 my-lg-0 d-flex align-items-center">
-                                        <button className={styles['btn-search']} type="submit">
-                                            <img className={styles['search-ico']} src={searchIcon} alt="Buscar" />
-                                        </button>
-                                        <input
-                                            className={styles['form-control']}
-                                            type="search"
-                                            placeholder="Busque na RBS"
-                                            aria-label="Search"
-                                        />
-                                    </form>
-                                </li>
-                            </div>
-
+                            <img className={styles['logo-rbs']} src={logoContent} alt="Logo RBS" />
                             <div className={styles['content-iteration-user']}>
+                                <li onClick={handleOpenMenu} className={styles['desktop-menu-item']}>
+                                    <div className={styles['nav-link']}>
+                                        <span className={styles['iteration-header-text']}>
+                                            Menu
+                                        </span>
+                                    </div>
+                                </li>
                                 {loggedInUser ? (
                                     <li className={styles['user-login-or-register']}>
                                         <div className={styles['nav-link']}>
@@ -100,35 +118,36 @@ function Header({ /* onBagIconClick */ }: HeaderProps) {
                                     </li>
                                 ) : (
                                     <li className={styles['user-login-or-register']}>
-                                        <a
-                                            className="nav-link"
-                                            style={{ color: "white" }}
+                                        <span
+                                            className={styles['nav-link']}
                                             onClick={(e) => {
                                                 e.preventDefault();
                                             }}
                                         >
-                                            <img className={styles['user-ico']} src={userIco} alt="login ou registro" />
+                                            <img className={styles['iteration-header']} src={userIco} alt="login ou registro" />
                                             <span className={styles['iteration-header-text']}>Entre ou cadastre-se</span>
-                                        </a>
+                                        </span>
                                     </li>
                                 )}
                                 <li className={styles['nav-item']}>
-                                    <a className={styles['nav-link']}>
+                                    <div className={styles['nav-link']}>
                                         <img className={styles['iteration-header']} src={suportIco} alt="Suporte" />
-                                    </a>
+                                        <span className={styles['iteration-header-text']}>Suporte</span>
+                                    </div>
                                 </li>
                                 <li className={styles['iteration-bag-item']}>
-                                    <a
+                                    <span
                                         className={styles['nav-link']}
                                         onClick={handleBagClick}
                                     >
                                         <img className={styles['iteration-header']} src={bagIco} alt="Sacola de compras" />
+                                        <span className={styles['iteration-header-text']}>Carrinho</span>
                                         {itemCount > 0 && (
                                             <div className={styles['content-item-count']}>
                                                 <span className={styles['item-count']}>{itemCount}</span>
                                             </div>
                                         )}
-                                    </a>
+                                    </span>
                                 </li>
                                 {loggedInUser && (
                                     <li className={styles['nav-link']}>
@@ -139,23 +158,11 @@ function Header({ /* onBagIconClick */ }: HeaderProps) {
                                 )}
                             </div>
                         </ul>
-
                     </div>
                 </nav>
-                <nav className="navbar navbar-expand-lg navbar-light">
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav mx-auto">
-                            <li className={styles['nav-item']}>
-                                <a className={styles['nav-link']}>
-                                    {/* Todos os Produtos */}
-                                </a>
-                            </li>
-                            {/* Outros links de categoria */}
-                        </ul>
-                    </div>
-                </nav>
-            </div >
-        </header >
+            </div>
+            <SideMenu isOpen={isSideMenuOpen} onClose={handleCloseMenu} /> {/* Renderização do SideMenu */}
+        </header>
     );
 }
 
