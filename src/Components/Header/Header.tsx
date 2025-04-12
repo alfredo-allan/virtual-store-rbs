@@ -101,7 +101,7 @@ function Header({ /* onBagIconClick */ }: HeaderProps) {
                 <nav className="navbar navbar-expand-lg">
                     <div id="navbarNav">
                         <ul className="navbar-nav ml-auto">
-                            {/* <img className={styles['logo-rbs']} src={logoIco} alt="Logo RBS" /> */}
+                            <img className={styles['logo-rbs']} src={logoIco} alt="Logo RBS" />
                             <div className={styles['content-iteration-user']}>
                                 <li onClick={handleOpenMenu} className={styles['desktop-menu-item']}>
                                     <div className={styles['nav-link']}>
