@@ -375,6 +375,10 @@ footer {
         left: 19%;
         top: -52%;
 
+        img {
+            width: 25px;
+            height: 25px;
+        }
     }
 
 }

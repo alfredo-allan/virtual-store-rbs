@@ -232,11 +232,12 @@
         /* Ajuste a duração e a intensidade conforme necessário */
     }
 
-    .logo-rbs {}
+
 
     .content-iteration-user {
         position: relative;
-        top: 10px;
+        top: 26px;
+        left: 160px;
     }
 
     .iteration-header {
@@ -286,6 +287,30 @@
     .container {
         padding-left: 50px;
         /* Ajuste o padding para não sobrepor o ícone */
+    }
+
+    .content-logo-rbs {
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        position: relative;
+        left: 100%;
+        right: auto;
+        top: 75px;
+    }
+
+    .logo-rbs {
+        width: 275px;
+    }
+
+    .nav-link {
+        font-family: var(--font-family) !important;
+        color: white;
+        font-weight: 500;
+        cursor: pointer;
+        position: relative;
+        top: -125px;
+        left: 36px;
     }
 }
 
