@@ -230,9 +230,7 @@
         /* Ajuste a duração e a intensidade conforme necessário */
     }
 
-    .logo-rbs {
-        display: none;
-    }
+    .logo-rbs {}
 
     .content-iteration-user {
         position: relative;
@@ -241,6 +239,9 @@
 
     .iteration-header {
         margin-right: 20px;
+        width: 32px;
+        position: relative;
+        left: 10px;
     }
 }
 

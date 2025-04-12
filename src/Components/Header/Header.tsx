@@ -11,6 +11,7 @@ import { useShoppingBag } from '../../Contexts/ShoppingBagContext'; // Importe o
 import logoContent from '../../Assets/Img/rbs_logo.png';
 import SideMenu from '../../Components/SideMenu/SideMenu'; // Certifique-se do caminho correto
 import menuIco from '../../Assets/Img/menu.png'; // Importe o ícone de menu
+import logoIco from '../../Assets/Img/logo-rbs-remove-bg.png';
 
 interface HeaderProps {
     // onBagIconClick?: () => void; // Remova ou deixe como está, a lógica agora está interna
@@ -100,7 +101,7 @@ function Header({ /* onBagIconClick */ }: HeaderProps) {
                 <nav className="navbar navbar-expand-lg">
                     <div id="navbarNav">
                         <ul className="navbar-nav ml-auto">
-                            <img className={styles['logo-rbs']} src={logoContent} alt="Logo RBS" />
+                            {/* <img className={styles['logo-rbs']} src={logoIco} alt="Logo RBS" /> */}
                             <div className={styles['content-iteration-user']}>
                                 <li onClick={handleOpenMenu} className={styles['desktop-menu-item']}>
                                     <div className={styles['nav-link']}>
