@@ -1,0 +1,113 @@
+.login-or-register-container {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15%;
+    font-family: var(--font-family);
+    color: white;
+    margin-bottom: 20vh;
+    z-index: 0;
+}
+
+.form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0;
+}
+
+.form-input {
+    width: 630px;
+    max-width: 800px;
+    margin-top: 30px;
+    height: 50px;
+    outline: gray;
+    background-color: var(--primary-gray);
+    border: none;
+    color: var(--primary-black);
+    padding: 5px;
+}
+
+.submit-button {
+    background-color: gray;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    width: 50%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    border: none;
+    padding: 13px;
+    position: relative;
+    top: 20px;
+}
+
+.submit-button:hover {
+    background-color: var(--hover-gray);
+}
+
+.toggle-button {
+    background-color: gray;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    width: 315px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    border: none;
+    padding: 13px;
+    position: relative;
+    top: 30px;
+    left: -158px;
+
+}
+
+.toggle-button:hover {
+    background-color: var(--hover-gray);
+}
+
+.shipping-options-list input[type="radio"] {
+    margin-right: 8px;
+}
+
+.radio-input-login {
+    /* Estilos para os radio buttons */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid gray;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    margin-right: 15px;
+    /* Adiciona espaço entre o radio button e o texto */
+}
+
+.radio-input-login:checked::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.radio-input-login:focus {
+    box-shadow: 0 0 0 2px var(--hover-gray);
+}
+
+.label-radio {
+    margin-right: 10px;
+}

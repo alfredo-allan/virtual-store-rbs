@@ -30,7 +30,12 @@ function Header({ /* onBagIconClick */ }: HeaderProps) {
 
     const handleLogout = () => {
         logout();
-        navigate('/login');
+        navigate('/login-or-register');
+    };
+
+    const reloadingHome = () => {
+        logout();
+        navigate('/');
     };
 
     const handleBagClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -102,7 +107,7 @@ function Header({ /* onBagIconClick */ }: HeaderProps) {
                     <div id="navbarNav">
                         <ul className="navbar-nav ml-auto">
                             <div className={styles['content-logo-rbs']}>
-                                <img className={styles['logo-rbs']} src={logoIco} alt="Logo RBS" />
+                                <img className={styles['logo-rbs']} onClick={reloadingHome} src={logoIco} alt="Logo RBS" />
                             </div>
                             <div className={styles['content-iteration-user']}>
                                 <li onClick={handleOpenMenu} className={styles['desktop-menu-item']}>
@@ -115,19 +120,19 @@ function Header({ /* onBagIconClick */ }: HeaderProps) {
                                 {loggedInUser ? (
                                     <li className={styles['user-login-or-register']}>
                                         <div className={styles['nav-link']}>
-                                            <img className={styles['user-ico']} src={userIco} alt="Usuário logado" />
+                                            <img className={styles['iteration-header']} src={userIco} alt="Usuário logado" />
                                             <span className={styles['iteration-header-text']}>Bem-vindo(a), {loggedInUser.nome}</span>
                                         </div>
                                     </li>
                                 ) : (
-                                    <li className={styles['user-login-or-register']}>
+                                    <li className={styles['user-login-or-register']} onClick={handleLogout}>
                                         <span
                                             className={styles['nav-link']}
                                             onClick={(e) => {
                                                 e.preventDefault();
                                             }}
                                         >
-                                            <img className={styles['iteration-header']} src={userIco} alt="login ou registro" />
+                                            <img className={styles['iteration-header']} onClick={handleLogout} src={userIco} alt="login ou registro" />
                                             <span className={styles['iteration-header-text']}>Entre ou cadastre-se</span>
                                         </span>
                                     </li>

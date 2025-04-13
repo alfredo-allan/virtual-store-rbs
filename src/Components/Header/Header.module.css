@@ -27,6 +27,7 @@
     /* Opcional: para suavizar outras transformações */
     animation: pulseLogo 2s infinite alternate;
     /* Adiciona a animação de pulso */
+    cursor: pointer;
 
 }
 

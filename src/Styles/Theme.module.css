@@ -4,3 +4,8 @@
     --primary-gray: #f9f9f4;
     --hover-gray: rgb(99, 98, 98);
 }
+
+html {
+    background-color: var(--primary-black);
+    font-family: var(--font-family) !important;
+}
