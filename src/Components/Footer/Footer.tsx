@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './Footer.module.css';
 import icoInstagram from '../../Assets/Img/instagram.png';
 import icoFacebook from '../../Assets/Img/facebook-app-symbol.png';
@@ -16,6 +17,10 @@ import rocketIco from '../../Assets/Img/rocket.png';
 function Footer() {
     const [isInstitutionalOpen, setIsInstitutionalOpen] = useState(false);
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    // Remova o useNavigate aqui, não é necessário para links externos
+    // const navigate = useNavigate();
+    const instagramUrl = 'https://www.instagram.com/rbs.representacao/?igsh=d3NrNGs2ZjJsdWp2';
+
 
     const toggleInstitutional = () => {
         if (isMobile) {
@@ -29,6 +34,16 @@ function Footer() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+
+    // Função para navegar para um link externo
+    const navigateToExternalLink = (url: string) => { // Adicionamos ": string" para definir o tipo do parâmetro url
+        window.open(url, '_blank'); // Abre em uma nova aba
+        // Se você quiser redirecionar na mesma aba, use:
+        // window.location.href = url;
+    };
+
+    // URL do Instagram
+
     return (
         <footer className={styles.footer}>
             <div className={styles['footer-content']}>
@@ -37,7 +52,12 @@ function Footer() {
                         <img className={styles['logo-footer']} src={rbsIco} alt="logo rbs" />
                     </div>
                     <div className={styles['content-social-icons']}>
-                        <img className={styles['social-icon']} src={icoInstagram} alt="Instagram" />
+                        <img
+                            className={styles['social-icon']}
+                            onClick={() => navigateToExternalLink(instagramUrl)}
+                            src={icoInstagram}
+                            alt="Instagram"
+                        />
                         <img className={styles['social-icon']} src={icoFacebook} alt="Facebook" />
                         <img className={styles['social-icon']} src={rocketIco} alt="leap" />
                         <img className={styles['social-icon-youtube']} src={icoYoutube} alt="Twitter" />
@@ -65,31 +85,31 @@ function Footer() {
                     {isMobile ? (
                         isInstitutionalOpen && (
                             <div className={styles['institutional-links']}>
-                                <a href="#">Sobre a gente</a>
-                                <a href="#">Trocas e devoluções</a>
-                                <a href="#">Política de Privacidade</a>
-                                <a href="#">Política Promocional</a>
-                                <a href="#">Política de Pagamento</a>
-                                <a href="#">Política de Entrega</a>
-                                <a href="#">Política de Cookies</a>
-                                <a href="#">Dúvidas Frequentes</a>
-                                <a href="#">Fale Conosco</a>
-                                <a href="#">Catálogo Completo</a>
-                                <a href="#">Termos de Uso</a>
+                                <b>Sobre a gente</b>
+                                <b>Trocas e devoluções</b>
+                                <b>Política de Privacidade</b>
+                                <b>Política Promocional</b>
+                                <b>Política de Pagamento</b>
+                                <b>Política de Entrega</b>
+                                <b>Política de Cookies</b>
+                                <b>Dúvidas Frequentes</b>
+                                <b>Fale Conosco</b>
+                                <b>Catálogo Completo</b>
+                                <b>Termos de Uso</b>
                             </div>
                         )
                     ) : (
                         <div className={styles['institutional-links']}>
-                            <a href="#">Sobre a gente</a>
-                            <a href="#">Trocas e devoluções</a>
-                            <a href="#">Política de Privacidade</a>
-                            <a href="#">Política Promocional</a>
-                            <a href="#">Política de Pagamento</a>
-                            <a href="#">Política de Entrega</a>
-                            <a href="#">Política de Cookies</a>
-                            {/* <a href="#">Dúvidas Frequentes</a> */}
-                            <a href="#">Fale Conosco</a>
-                            <a href="#">Catálogo Completo</a>
+                            <b>Sobre a gente</b>
+                            <b>Trocas e devoluções</b>
+                            <b>Política de Privacidade</b>
+                            <b>Política Promocional</b>
+                            <b>Política de Pagamento</b>
+                            <b>Política de Entrega</b>
+                            <b>Política de Cookies</b>
+                            {/* <b>Dúvidas Frequentes</b> */}
+                            <b>Fale Conosco</b>
+                            <b>Catálogo Completo</b>
                         </div>
                     )}
                 </div>

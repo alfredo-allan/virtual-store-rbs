@@ -16,3 +16,8 @@
     top: 10px;
 }
 
+@media (max-width: 768px) {
+    .content-logo {
+        left: 31px;
+    }
+}

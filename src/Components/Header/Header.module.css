@@ -9,6 +9,7 @@
     right: 0;
     z-index: 1000;
     /* Garante que o header fique acima de outros elementos */
+    text-align: center;
 }
 
 .logo-rbs {
@@ -106,13 +107,7 @@
         display: none;
     }
 
-    .user-ico {
-        cursor: pointer;
-        position: relative;
-        margin-right: 20px;
 
-
-    }
 }
 
 
@@ -124,19 +119,59 @@
 
 }
 
-.user-ico {
-    cursor: pointer;
+.iteration-user-ico {
+    margin-right: 0px;
     position: relative;
+    left: -25px;
+    width: 32px;
+}
 
+.iteration-user-text {
+    position: relative;
+    left: -20px;
+}
+
+.iteration-suport-ico {
+    margin-right: 0px;
+    position: relative;
+    left: 20px;
+    width: 32px;
+}
+
+.iteration-suport-text {
+    position: relative;
+    left: 25px;
+}
+
+.iteration-bag-ico {
+    margin-right: 0px;
+    position: relative;
+    left: 50px;
+    width: 32px;
+}
+
+.iteration-bag-text {
+    position: relative;
+    left: 60px;
 }
 
 
+.iteration-menu-text {
+    font-family: var(--font-family);
+    font-weight: 500;
+    position: relative;
+    left: -35px;
+    top: 2px;
+}
 
 .btn-logout {
     background-color: transparent;
     border: none;
     color: white;
     font-family: var(--font-family);
+    position: relative;
+    left: 75px;
+    top: 3px;
 }
 
 .content-item-count {
@@ -292,16 +327,19 @@
 
     .content-logo-rbs {
         display: flex;
-        justify-content: center;
         margin: 0;
+        left: 160px;
         position: relative;
-        left: 100%;
-        right: auto;
-        top: 75px;
+        right: 160px;
+        top: 70px;
+        width: min-content;
     }
 
     .logo-rbs {
         width: 275px;
+        display: flex;
+        justify-content: center;
+        text-align: center;
     }
 
     .nav-link {
@@ -312,6 +350,29 @@
         position: relative;
         top: -125px;
         left: 36px;
+    }
+
+    .iteration-user-ico {
+        left: -100px;
+    }
+
+    .iteration-user-text {
+
+        position: relative;
+        left: -92px;
+        font-size: small;
+        /* text-wrap: nowrap; */
+        top: 0px;
+
+    }
+
+    .iteration-suport-ico,
+    .iteration-suport-text {
+        display: none;
+    }
+
+    .iteration-bag-ico {
+        left: -80px;
     }
 }
 

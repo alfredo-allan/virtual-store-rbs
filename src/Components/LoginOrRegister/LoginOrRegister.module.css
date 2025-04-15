@@ -16,11 +16,12 @@
     justify-content: center;
     flex-direction: column;
     margin: 0;
+    width: 630px;
+    max-width: 800px;
 }
 
 .form-input {
-    width: 630px;
-    max-width: 800px;
+
     margin-top: 30px;
     height: 50px;
     outline: gray;
@@ -110,4 +111,26 @@
 
 .label-radio {
     margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+    .form {
+        width: 90%;
+    }
+
+    .submit-button {
+        width: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    .toggle-button {
+        width: 90%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        left: 0px;
+    }
 }

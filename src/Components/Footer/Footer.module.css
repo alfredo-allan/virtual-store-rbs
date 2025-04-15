@@ -67,9 +67,10 @@ footer {
     font-family: var(--font-family);
 }
 
-.institutional-links a {
+.institutional-links b {
     text-decoration: none;
     color: white;
+    font-weight: 400;
 }
 
 .institutional-title {

@@ -34,14 +34,16 @@ function Header({ /* onBagIconClick */ }: HeaderProps) {
     };
 
     const reloadingHome = () => {
-        logout();
         navigate('/');
     };
+
 
     const handleBagClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         navigate('/bag'); // Navega para a página da sacola
     };
+
+
 
     useEffect(() => {
         const handleScroll = () => {
@@ -112,7 +114,7 @@ function Header({ /* onBagIconClick */ }: HeaderProps) {
                             <div className={styles['content-iteration-user']}>
                                 <li onClick={handleOpenMenu} className={styles['desktop-menu-item']}>
                                     <div className={styles['nav-link']}>
-                                        <span className={styles['iteration-header-text']}>
+                                        <span className={styles['iteration-menu-text']}>
                                             Menu
                                         </span>
                                     </div>
@@ -120,8 +122,8 @@ function Header({ /* onBagIconClick */ }: HeaderProps) {
                                 {loggedInUser ? (
                                     <li className={styles['user-login-or-register']}>
                                         <div className={styles['nav-link']}>
-                                            <img className={styles['iteration-header']} src={userIco} alt="Usuário logado" />
-                                            <span className={styles['iteration-header-text']}>Bem-vindo(a), {loggedInUser.nome}</span>
+                                            <img className={styles['iteration-user-ico']} src={userIco} alt="Usuário logado" />
+                                            <span className={styles['iteration-user-text']}>Bem-vindo(a), {loggedInUser.nome}</span>
                                         </div>
                                     </li>
                                 ) : (
@@ -132,15 +134,15 @@ function Header({ /* onBagIconClick */ }: HeaderProps) {
                                                 e.preventDefault();
                                             }}
                                         >
-                                            <img className={styles['iteration-header']} onClick={handleLogout} src={userIco} alt="login ou registro" />
-                                            <span className={styles['iteration-header-text']}>Entre ou cadastre-se</span>
+                                            <img className={styles['iteration-user-ico']} onClick={handleLogout} src={userIco} alt="login ou registro" />
+                                            <span className={styles['iteration-user-text']}>Entre ou cadastre-se</span>
                                         </span>
                                     </li>
                                 )}
                                 <li className={styles['nav-item']}>
                                     <div className={styles['nav-link']}>
-                                        <img className={styles['iteration-header']} src={suportIco} alt="Suporte" />
-                                        <span className={styles['iteration-header-text']}>Suporte</span>
+                                        <img className={styles['iteration-suport-ico']} src={suportIco} alt="Suporte" />
+                                        <span className={styles['iteration-suport-text']}>Suporte</span>
                                     </div>
                                 </li>
                                 <li className={styles['iteration-bag-item']}>
@@ -148,8 +150,8 @@ function Header({ /* onBagIconClick */ }: HeaderProps) {
                                         className={styles['nav-link']}
                                         onClick={handleBagClick}
                                     >
-                                        <img className={styles['iteration-header']} src={bagIco} alt="Sacola de compras" />
-                                        <span className={styles['iteration-header-text']}>Carrinho</span>
+                                        <img className={styles['iteration-bag-ico']} src={bagIco} alt="Sacola de compras" />
+                                        <span className={styles['iteration-bag-text']}>Carrinho</span>
                                         {itemCount > 0 && (
                                             <div className={styles['content-item-count']}>
                                                 <span className={styles['item-count']}>{itemCount}</span>
