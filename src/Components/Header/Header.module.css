@@ -374,6 +374,10 @@
     .iteration-bag-ico {
         left: -80px;
     }
+
+    .iteration-bag-text {
+        display: none;
+    }
 }
 
 /* Oculta o ícone em telas maiores (desktop) */

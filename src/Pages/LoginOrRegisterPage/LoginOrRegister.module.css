@@ -1,3 +1,4 @@
 .login-register-page {
     background-color: var(--primary-black);
+    overflow: hidden;
 }
