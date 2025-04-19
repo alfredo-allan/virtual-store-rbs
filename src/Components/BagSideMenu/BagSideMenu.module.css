@@ -1,0 +1,439 @@
+/* BagSideMenu.module.css */
+.bag-side-menu {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    direction: rtl;
+    font-family: var(--secondary-font);
+    overflow-y: hidden !important;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 90%;
+    /* Aumentei a largura para simular a imagem */
+    max-width: 450px;
+    /* Defina uma largura máxima se desejar */
+    height: 100vh;
+    background-color: #fff;
+    /* Cor de fundo branca como na imagem */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.bag-side-menu.open {
+    transform: translateX(0);
+}
+
+.menu-header {
+    background-color: var(--primary-brown);
+    /* Fundo branco */
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    border-bottom: 1px solid #ccc;
+    /* Linha divisória */
+}
+
+.menu-header-title {
+    display: flex;
+    justify-content: left;
+    color: var(--primary-orange);
+    /* Cor do título */
+    font-size: 1.2rem;
+    /* Tamanho do título */
+    font-weight: bold;
+    margin: 0;
+    direction: ltr;
+    /* Garante a leitura da esquerda para a direita */
+}
+
+.empty-bag {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Centraliza o conteúdo */
+    justify-content: center;
+    /* Centraliza o conteúdo verticalmente */
+    padding: 20px;
+    height: 100%;
+    direction: ltr;
+    /* Garante a leitura da esquerda para a direita */
+}
+
+.empty-bag-title {
+    text-align: center;
+    color: var(--primary-brown);
+    font-family: var(--secondary-font);
+    font-weight: 500;
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+.close-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 10px;
+    direction: ltr;
+    /* Garante que o botão fique à direita */
+
+    img {
+        width: 24px;
+        /* Tamanho do ícone de fechar */
+        height: 24px;
+    }
+}
+
+.menu-content {
+    padding: 15px;
+    overflow-y: auto;
+    flex-grow: 1;
+    direction: ltr;
+}
+
+.bag-items-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.bag-items-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.bag-items-list li:last-child {
+    border-bottom: none;
+}
+
+.bag-item {
+    display: flex;
+    align-items: center;
+}
+
+.item-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.item-details {
+    flex-grow: 1;
+}
+
+.item-name {
+    font-size: 1rem;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.item-price {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.quantity-button {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 5px 8px;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.quantity {
+    font-size: 0.9rem;
+}
+
+.remove-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: auto;
+}
+
+.remove-button img {
+    width: 20px;
+    height: 20px;
+}
+
+.shipping-info {
+    padding: 15px;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    margin-top: 15px;
+    direction: ltr;
+}
+
+.shipping-info p {
+    font-size: 0.9rem;
+    margin: 5px 0;
+    text-align: left;
+}
+
+.free-shipping {
+    font-weight: bold;
+    color: green;
+}
+
+.free-shipping-reached {
+    font-weight: bold;
+    color: green;
+    margin: 5px 0;
+    text-align: left;
+}
+
+.shipping-calculation {
+    margin-top: 10px;
+}
+
+.cep-input {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.cep-input input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-right: 5px;
+    width: 60%;
+}
+
+.cep-input button {
+    background-color: #f0ad4e;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.cep-input button:hover {
+    background-color: #e08e0b;
+}
+
+.order-summary {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    margin-top: 15px;
+    direction: ltr;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    font-size: 0.9rem;
+}
+
+.total {
+    font-weight: bold;
+}
+
+.total-price {
+    font-weight: bold;
+    color: #d9534f;
+}
+
+.menu-actions {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    /* Alinha os botões verticalmente */
+    gap: 10px;
+    direction: ltr;
+}
+
+.menu-actions-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Centraliza o botão horizontalmente */
+    justify-content: flex-end;
+    /* Empurra o botão para a parte inferior */
+    padding: 15px;
+    gap: 10px;
+    height: 100%;
+    /* Ocupa toda a altura para o justify-content funcionar */
+    direction: ltr;
+}
+
+.continue-shopping-button {
+    background-color: transparent;
+    color: var(--primary-brown);
+    border: 1px solid #401112 !important;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    /* Garante que o texto fique centralizado */
+    width: 100%;
+    /* Ocupa a largura total */
+    font-weight: 800;
+}
+
+/* .continue-shopping-button:hover {
+    background-color: var(--primary-orange);
+} */
+
+.checkout-button {
+    background-color: var(--primary-orange);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    font-weight: 800;
+}
+
+.checkout-button:hover {
+    background-color: #ed5b00b2;
+}
+
+/* ... outros estilos ... */
+
+.shipping-calculation {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cep-input {
+    display: flex;
+    gap: 10px;
+}
+
+.cep-input input[type="text"] {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+}
+
+.cep-input button {
+    padding: 8px 15px;
+    background-color: var(--primary-orange);
+    /* Cor laranja predominante */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.cep-input button:hover {
+    background-color: #d46a0d;
+}
+
+.shipping-options-list {
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.shipping-options-list h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1em;
+    color: #333;
+}
+
+.shipping-options-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.shipping-options-list li {
+    margin-bottom: 8px;
+}
+
+.shipping-options-list label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.shipping-options-list input[type="radio"] {
+    margin-right: 8px;
+}
+
+.free-shipping-text {
+    color: green;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.content-home-address-radio {
+    /* Estilos para os radio buttons */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-orange);
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    margin-right: 10px;
+    /* Adiciona espaço entre o radio button e o texto */
+}
+
+.content-home-address-radio:checked::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    background-color: var(--primary-orange);
+    border-radius: 50%;
+}
+
+.content-home-address-radio:focus {
+    box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.5);
+}
+
+.menu-summary {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0;
+}
+
+.shipping-section {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}

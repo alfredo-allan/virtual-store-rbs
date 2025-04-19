@@ -1,0 +1,21 @@
+.product-inspect-carousel {
+    width: 100%;
+}
+
+.carousel-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.carousel-image {
+    max-width: 100%;
+    height: auto;
+}
+
+.carousel-slide.selected {
+    border: 2px solid var(--primary-orange);
+    /* Cor da borda quando selecionado */
+}
+

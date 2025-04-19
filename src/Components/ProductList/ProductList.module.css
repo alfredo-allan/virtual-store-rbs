@@ -1,0 +1,21 @@
+.category-details {
+    padding: 20px;
+    margin-top: 30vh;
+}
+
+.product-section {
+    display: flex;
+    flex-wrap: wrap;
+    /* Permite que os cards quebrem para a próxima linha */
+    justify-content: flex-start;
+    /* Alinha os cards à esquerda */
+}
+
+@media (max-width: 768px) {
+    .product-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+        overflow-x: hidden;
+    }
+}

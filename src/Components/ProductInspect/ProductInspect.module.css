@@ -1,0 +1,59 @@
+.product-inspect {
+    padding: 20px;
+}
+
+.to-go-back {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.back-button {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.back-text {
+    font-weight: bold;
+}
+
+.product-details {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20vh;
+}
+
+.inspection-title {
+    margin-bottom: 20px;
+}
+
+.inspection-name {
+    font-size: 24px;
+    display: none;
+}
+
+.product-image-large {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.gallery {
+    display: flex;
+    overflow-x: auto;
+}
+
+.thumbnail {
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.thumbnail.selected {
+    border-color: blue;
+    /* Cor da borda quando selecionado */
+}

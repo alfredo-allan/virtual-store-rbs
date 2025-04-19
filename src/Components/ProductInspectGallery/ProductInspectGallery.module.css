@@ -1,0 +1,35 @@
+.product-image-large {
+    max-width: 30%;
+    height: auto;
+    margin-bottom: 20px;
+    margin-left: 0;
+}
+
+.gallery {
+    display: flex;
+    overflow-x: auto;
+    gap: 30px;
+    margin-bottom: 80vh;
+}
+
+.thumbnail {
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.thumbnail.selected {
+    border-color: var(--primary-orange);
+    /* Cor da borda quando selecionado */
+}
+
+.content-product-ico {
+
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 25%;
+    left: 21%;
+}

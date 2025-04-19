@@ -2,10 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from '../Pages/HomePage/HomePage';
 import LoginOrRegisterPage from '../Pages/LoginOrRegisterPage/LoginOrRegisterPage';
-// import CookiesPolicy from '../Pages/CookiesPolicy/CookiesPolicy';
-// import ProductInspectPage from '../Pages/ProductInspectPage/ProductInpectPage';
-// import BagSideMenuPage from '../Pages/BagSideMenuPage/BagSideMenuPage'; 
-// import CartCheckPage from '../Pages/CartCheckPage/CartCheckPage';
+import ProductInspectPage from '../Pages/ProductInspectPage/ProductInpectPage';
+import BagSideMenuPage from '../Pages/BagSideMenuPage/BagSideMenuPage';
 
 function AppRoutes() {
     return (
@@ -13,12 +11,8 @@ function AppRoutes() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login-or-register" element={<LoginOrRegisterPage />} />
-
-                {/* <Route path="/cookies-policy" element={<CookiesPolicy />} /> */}
-                {/* <Route path="/product/:id" element={<ProductInspectPage />} /> */}
-                {/* Adicione a rota para a página da sacola */}
-                {/* <Route path="/CartCheck" element={<CartCheckPage />} /> */}
-                {/* <Route path="/bag" element={<BagSideMenuPage />} /> */}
+                <Route path="/bag" element={<BagSideMenuPage />} />
+                <Route path="/product/:id" element={<ProductInspectPage />} />
             </Routes>
         </Router>
     );

@@ -1,0 +1,20 @@
+.product-inspect-page {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0;
+}
+
+.back-wrapper {
+    padding: 1rem;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: var(--hover-gray);
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 900;
+}
