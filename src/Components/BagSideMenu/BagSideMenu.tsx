@@ -2,42 +2,41 @@ import React, { useState, useEffect } from 'react';
 import styles from './BagSideMenu.module.css';
 import trash from '../../Assets/Img/bin.png';
 import closeIcon from '../../Assets/Img/close-button.png';
-import { BagItem, useShoppingBag } from '../../Contexts/ShoppingBagContext';
+import { BagItem as ShoppingBagItem, useShoppingBag } from '../../Contexts/ShoppingBagContext'; // Renomeando para evitar conflito
 import { useNavigate } from 'react-router-dom';
-import ModalResponse from '../../Components/ModalResponse/ModalResponse'; // Importe o ModalResponse
+import ModalResponse from '../../Components/ModalResponse/ModalResponse';
+import { calculateShipping } from './api'; // Importe a função da API
 
 export interface BagSideMenuProps {
   isOpen: boolean;
   onClose: () => void;
   onClearBag: () => void;
-  // bagItems: BagItem[]; // Não precisamos mais receber como prop se usamos o Context
 }
 
-interface DeliveryOption {
-  id: string;
+interface MelhorEnvioService {
+  id: number;
   name: string;
-  price: number;
+  price: string; // A API retorna o preço como string
+  delivery_time: number;
+  delivery_time_unit: string;
 }
 
 const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }) => {
-  const { bagItems, removeItem, updateItemQuantity } = useShoppingBag(); // Usamos o contexto diretamente
+  const { bagItems, removeItem, updateItemQuantity } = useShoppingBag(); // Usamos as funções do contexto
   const navigate = useNavigate();
 
   const [cep, setCep] = useState('');
   const [formattedCep, setFormattedCep] = useState('');
   const [showShippingOptions, setShowShippingOptions] = useState(false);
   const [selectedShippingPrice, setSelectedShippingPrice] = useState<number | null>(null);
-  const [isCepInvalid, setIsCepInvalid] = useState(false); // Estado para controlar a exibição do modal
+  const [isCepInvalid, setIsCepInvalid] = useState(false);
+  const [shippingOptionsFromApi, setShippingOptionsFromApi] = useState<MelhorEnvioService[]>([]);
+  const [isCalculatingShipping, setIsCalculatingShipping] = useState(false); // Novo estado de carregamento
+  const [shippingError, setShippingError] = useState<string | null>(null); // Estado para erros de frete
 
-  const deliveryOptions: DeliveryOption[] = [
-    { id: 'rapida', name: 'Rápida', price: 15.30 },
-    { id: 'normal', name: 'Normal', price: 10.00 }, // Adicione mais opções conforme necessário
-  ];
   const freeShippingThreshold = 135;
   const bagTotal = bagItems.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
   const isFreeShipping = bagTotal >= freeShippingThreshold;
-  const shippingCost = selectedShippingPrice !== null ? selectedShippingPrice : (isFreeShipping ? 0 : null);
-  const totalWithShipping = bagTotal + (shippingCost !== null ? shippingCost : 0);
 
   const handleQuantityChange = (id: string | number, newQuantity: number) => {
     updateItemQuantity(id, Math.max(1, newQuantity));
@@ -70,15 +69,29 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
     }
   }, [cep]);
 
-  const handleCalculateShipping = () => {
-    if (formattedCep.length === 9) { // Verifica se o CEP formatado tem 9 caracteres (xxxxx-xxx)
-      setShowShippingOptions(true);
-      setIsCepInvalid(false); // Garante que o modal de erro não será exibido se o CEP for válido
-      // Aqui você faria a chamada real para a API de frete
+  const handleCalculateShipping = async () => {
+    if (formattedCep.length === 9) {
+      setIsCalculatingShipping(true);
+      setShowShippingOptions(false);
+      setShippingOptionsFromApi([]);
+      setShippingError(null);
+
+      try {
+        const shippingData = await calculateShipping(formattedCep, bagItems); // Passamos 'bagItems' diretamente
+        setShippingOptionsFromApi(shippingData);
+        setShowShippingOptions(true);
+        setIsCepInvalid(false);
+      } catch (error: any) {
+        console.error("Erro ao calcular o frete:", error);
+        setShippingError("Não foi possível calcular o frete. Por favor, tente novamente.");
+        setShowShippingOptions(false);
+      } finally {
+        setIsCalculatingShipping(false);
+      }
     } else {
       setShowShippingOptions(false);
-      setSelectedShippingPrice(null); // Reseta o frete selecionado se o CEP for inválido
-      setIsCepInvalid(true); // Define o estado para mostrar o modal de CEP inválido
+      setSelectedShippingPrice(null);
+      setIsCepInvalid(true);
     }
   };
 
@@ -86,17 +99,13 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
     setSelectedShippingPrice(price);
   };
 
-  // Função para fechar o modal de CEP inválido
   const handleCloseModal = () => {
-    setIsCepInvalid(false); // Define o estado para esconder o modal
+    setIsCepInvalid(false);
   };
 
-  // Calcula o subtotal (sem frete)
   const subtotal = bagItems.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
-  // Calcula o custo do frete (considerando frete grátis ou opção selecionada)
   const actualShippingCost = isFreeShipping ? 0 : selectedShippingPrice;
-  // Calcula o total final
-  const finalTotal = subtotal + (actualShippingCost ?? 0); // Use 0 se actualShippingCost for null
+  const finalTotal = subtotal + (actualShippingCost ?? 0);
 
   return (
     <div className={`${styles['bag-side-menu']} ${isOpen ? styles['open'] : ''}`}>
@@ -117,7 +126,7 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
           </div>
         </div>
       ) : (
-        <> {/* Fragmento para agrupar múltiplos elementos */}
+        <>
           <div className={styles['menu-content']}>
             <ul className={styles['bag-items-list']}>
               {bagItems.map((item) => (
@@ -128,7 +137,6 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
                     )}
                     <div className={styles['item-details']}>
                       <h3 className={styles['item-name']}>{item.name}</h3>
-                      {/* Exibir cor e tamanho se existirem */}
                       {item.color && <span className={styles['item-variation']}>Cor: {item.color}</span>}
                       {item.size && <span className={styles['item-variation']}>Tamanho: {item.size}</span>}
                       <span className={styles['item-price']}>R$ {(item.price || 0).toFixed(2)}</span>
@@ -136,7 +144,7 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
                         <button
                           onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
                           className={styles['quantity-button']}
-                          disabled={item.quantity <= 1} // Desabilitar se a quantidade for 1
+                          disabled={item.quantity <= 1}
                         >
                           -
                         </button>
@@ -160,53 +168,55 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
 
           <div className={styles['menu-summary']}>
             <div className={styles['shipping-section']}>
-              <h4>Calcular frete</h4>
+              <h4 className={styles['shipping-section-title']}>Calcular frete</h4>
               <div className={styles['cep-input-group']}>
                 <input
-                  type="text" // Mudar para text para permitir a máscara
+                  type="text"
                   placeholder="Digite seu CEP"
-                  value={formattedCep} // Usar o CEP formatado
+                  value={formattedCep}
                   onChange={handleCepChange}
-                  maxLength={9} // Limitar o input formatado
+                  maxLength={9}
                   className={styles['cep-input']}
                 />
-                <button onClick={handleCalculateShipping} className={styles['calculate-shipping-button']}>
-                  Calcular
+                <button
+                  onClick={handleCalculateShipping}
+                  className={styles['calculate-shipping-button']}
+                  disabled={isCalculatingShipping}
+                >
+                  {isCalculatingShipping ? 'Calculando...' : 'Calcular'}
                 </button>
               </div>
 
-              {showShippingOptions && (
+              {shippingError && (
+                <p className={styles['shipping-error']}>{shippingError}</p>
+              )}
+
+              {showShippingOptions && shippingOptionsFromApi.length > 0 && (
                 <div className={styles['shipping-options']}>
                   <h5>Opções de entrega:</h5>
-                  {deliveryOptions.map((option) => (
+                  {shippingOptionsFromApi.map((option) => (
                     <div key={option.id} className={styles['shipping-option']}>
                       <input
                         type="radio"
-                        id={option.id}
+                        id={`shipping-${option.id}`}
                         name="shippingOption"
-                        value={option.price}
-                        checked={selectedShippingPrice === option.price}
-                        onChange={() => handleShippingOptionSelect(option.price)}
+                        value={parseFloat(option.price)}
+                        checked={selectedShippingPrice === parseFloat(option.price)}
+                        onChange={() => handleShippingOptionSelect(parseFloat(option.price))}
                       />
-                      <label htmlFor={option.id}>
-                        {option.name} - R$ {option.price.toFixed(2)}
+                      <label htmlFor={`shipping-${option.id}`}>
+                        {option.name} - R$ {parseFloat(option.price).toFixed(2)} (Entrega em {option.delivery_time} {option.delivery_time_unit})
                       </label>
                     </div>
                   ))}
-                  {isFreeShipping && selectedShippingPrice !== null && (
-                    <p className={styles['free-shipping-applied']}>
-                      Frete grátis aplicado! (Opção selecionada desconsiderada)
-                    </p>
-                  )}
-                  {/* Adiciona opção para desmarcar */}
                   <div className={styles['shipping-option']}>
                     <input
                       type="radio"
                       id="no-shipping"
                       name="shippingOption"
-                      value={-1} // Um valor que não conflite ou simplesmente null
+                      value={-1}
                       checked={selectedShippingPrice === null}
-                      onChange={() => handleShippingOptionSelect(null)} // Define como null
+                      onChange={() => handleShippingOptionSelect(null)}
                     />
                     <label htmlFor="no-shipping">
                       Não incluir frete agora
@@ -214,36 +224,19 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
                   </div>
                 </div>
               )}
+              {showShippingOptions && shippingOptionsFromApi.length === 0 && !shippingError && (
+                <p>Nenhuma opção de frete disponível para este CEP.</p>
+              )}
             </div>
 
             <div className={styles['summary-details']}>
               <div className={styles['summary-row']}>
                 <span>Subtotal</span>
-                <span>R$ {subtotal.toFixed(2)}</span>
+                <span>R$ {bagTotal.toFixed(2)}</span> {/* Usando o valor recalculado */}
               </div>
-              <div className={styles['summary-row']}>
-                <span>Frete</span>
-                <span>
-                  {actualShippingCost === null
-                    ? 'A calcular'
-                    : actualShippingCost === 0
-                      ? 'Grátis'
-                      : `R$ ${actualShippingCost.toFixed(2)}`}
-                </span>
-              </div>
-              {bagTotal >= freeShippingThreshold && actualShippingCost !== 0 && selectedShippingPrice !== null && (
-                <p className={styles['free-shipping-info']}>
-                  Você ganhou frete grátis!
-                </p>
-              )}
-              {bagTotal < freeShippingThreshold && (
-                <p className={styles['free-shipping-info']}>
-                  Faltam R$ {(freeShippingThreshold - bagTotal).toFixed(2)} para frete grátis.
-                </p>
-              )}
               <div className={`${styles['summary-row']} ${styles['total']}`}>
                 <span>Total</span>
-                <span>R$ {finalTotal.toFixed(2)}</span>
+                <span>R$ {(bagTotal + (actualShippingCost ?? 0)).toFixed(2)}</span> {/* Usando o valor recalculado */}
               </div>
             </div>
 
@@ -259,7 +252,6 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
         </>
       )}
 
-      {/* --- Renderização Condicional do Modal --- */}
       {isCepInvalid && (
         <ModalResponse
           isOpen={isCepInvalid}

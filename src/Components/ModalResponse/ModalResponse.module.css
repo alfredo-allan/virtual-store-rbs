@@ -1,6 +1,7 @@
 .modal-content {
     background-color: var(--primary-black);
     z-index: 1050;
+    color: white;
 
 }
 

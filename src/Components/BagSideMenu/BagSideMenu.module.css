@@ -1,25 +1,23 @@
 /* BagSideMenu.module.css */
 .bag-side-menu {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     flex-direction: column;
-    direction: rtl;
-    font-family: var(--secondary-font);
+    font-family: var(--font-family);
     overflow-y: hidden !important;
     position: fixed;
     top: 0;
     right: 0;
     width: 90%;
-    /* Aumentei a largura para simular a imagem */
     max-width: 450px;
-    /* Defina uma largura máxima se desejar */
     height: 100vh;
     background-color: #fff;
-    /* Cor de fundo branca como na imagem */
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
     transform: translateX(100%);
     transition: transform 0.3s ease-in-out;
     z-index: 1000;
+    align-content: center;
+    text-align: center;
 }
 
 .bag-side-menu.open {
@@ -137,7 +135,7 @@
 
 .item-price {
     font-size: 0.9rem;
-    color: #555;
+    color: var(--primary-black);
 }
 
 .quantity-control {
@@ -187,18 +185,6 @@
     text-align: left;
 }
 
-.free-shipping {
-    font-weight: bold;
-    color: green;
-}
-
-.free-shipping-reached {
-    font-weight: bold;
-    color: green;
-    margin: 5px 0;
-    text-align: left;
-}
-
 .shipping-calculation {
     margin-top: 10px;
 }
@@ -206,7 +192,10 @@
 .cep-input {
     display: flex;
     align-items: center;
-    margin-top: 5px;
+    height: 35px;
+    border-radius: 4px;
+    border: 1px solid;
+    text-align: center;
 }
 
 .cep-input input {
@@ -215,21 +204,6 @@
     border-radius: 3px;
     margin-right: 5px;
     width: 60%;
-}
-
-.cep-input button {
-    background-color: #f0ad4e;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s ease;
-}
-
-.cep-input button:hover {
-    background-color: #e08e0b;
 }
 
 .order-summary {
@@ -252,7 +226,7 @@
 
 .total-price {
     font-weight: bold;
-    color: #d9534f;
+    color: var(--primary-black);
 }
 
 .menu-actions {
@@ -278,151 +252,26 @@
     direction: ltr;
 }
 
-.continue-shopping-button {
-    background-color: transparent;
-    color: var(--primary-brown);
-    border: 1px solid #401112 !important;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-    text-align: center;
-    /* Garante que o texto fique centralizado */
-    width: 100%;
-    /* Ocupa a largura total */
-    font-weight: 800;
-}
-
-/* .continue-shopping-button:hover {
-    background-color: var(--primary-orange);
-} */
 
 .checkout-button {
-    background-color: var(--primary-orange);
-    color: white;
+    background-color: white;
+    color: var(--primary-black);
     border: none;
     padding: 12px 20px;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.3s ease;
     font-weight: 800;
+    border: 1px solid;
 }
 
 .checkout-button:hover {
-    background-color: #ed5b00b2;
-}
-
-/* ... outros estilos ... */
-
-.shipping-calculation {
-    margin-top: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.cep-input {
-    display: flex;
-    gap: 10px;
-}
-
-.cep-input input[type="text"] {
-    flex-grow: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    outline: none;
-}
-
-.cep-input button {
-    padding: 8px 15px;
-    background-color: var(--primary-orange);
-    /* Cor laranja predominante */
+    background-color: var(--hover-btn);
     color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
 }
 
-.cep-input button:hover {
-    background-color: #d46a0d;
-}
 
-.shipping-options-list {
-    margin-top: 15px;
-    padding: 10px;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-}
-
-.shipping-options-list h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 1em;
-    color: #333;
-}
-
-.shipping-options-list ul {
-    list-style: none;
-    padding: 0;
-}
-
-.shipping-options-list li {
-    margin-bottom: 8px;
-}
-
-.shipping-options-list label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.shipping-options-list input[type="radio"] {
-    margin-right: 8px;
-}
-
-.free-shipping-text {
-    color: green;
-    font-weight: bold;
-    margin-left: 5px;
-}
-
-.content-home-address-radio {
-    /* Estilos para os radio buttons */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--primary-orange);
-    border-radius: 50%;
-    outline: none;
-    cursor: pointer;
-    position: relative;
-    margin-right: 10px;
-    /* Adiciona espaço entre o radio button e o texto */
-}
-
-.content-home-address-radio:checked::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 12px;
-    height: 12px;
-    background-color: var(--primary-orange);
-    border-radius: 50%;
-}
-
-.content-home-address-radio:focus {
-    box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.5);
-}
 
 .menu-summary {
     display: flex;
@@ -435,5 +284,81 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+    width: 100%;
+    margin: 0;
     align-items: center;
+}
+
+.shipping-section-title {
+    font-weight: 900;
+}
+
+.calculate-shipping-button {
+    display: flex;
+    text-align: center;
+    align-content: center;
+    width: 130px;
+    height: 45px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    background-color: var(--primary-black);
+    color: white;
+    padding-left: 32px;
+    padding-top: 10px;
+    font-weight: 700;
+    border: none;
+    border-radius: 4px;
+
+}
+
+.clear-bag-button {
+    background-color: white;
+    color: var(--primary-black);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    font-weight: 800;
+    border: 1px solid;
+}
+
+.clear-bag-button:hover {
+    background-color: var(--hover-btn);
+    color: white;
+}
+
+.calculate-shipping-button:hover {
+    background-color: var(--hover-btn);
+    color: white;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: right;
+    text-align: left;
+    position: relative;
+    left: -16px;
+
+}
+
+.continue-shopping-button {
+    background-color: white;
+    color: var(--primary-black);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    font-weight: 800;
+    border: 1px solid;
+    width: 100%;
+}
+
+
+.continue-shopping-button:hover {
+    background-color: var(--hover-btn);
+    color: white;
 }
