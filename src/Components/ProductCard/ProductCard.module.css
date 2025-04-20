@@ -30,7 +30,7 @@
 
 /* Adicione esta regra para o efeito de zoom no hover */
 .product-card:hover .product-image {
-    transform: scale(.70);
+    transform: scale(1.10);
     /* Aumenta a escala da imagem em 5% no hover */
 }
 

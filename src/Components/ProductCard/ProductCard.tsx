@@ -10,6 +10,7 @@ import { isMobile } from '../../utils/isMobile';
 export interface ProductCardProps {
     product: Product;
     icoHeart: string;
+    videoUrl?: string;
     onClick?: (product: Product) => void;
 }
 

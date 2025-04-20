@@ -1,0 +1,49 @@
+.search-results-page {
+    overflow: hidden;
+    font-family: var(--font-family);
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 30vh;
+    gap: 15px;
+    align-content: center;
+
+}
+
+@media (max-width: 768px) {
+    .product-list {
+        margin-top: 5vh;
+    }
+
+    .product-list {
+        justify-content: center;
+    }
+
+    .content-footer {
+        display: flex;
+        margin: 0;
+        justify-content: center;
+        width: 100%;
+        flex-direction: column;
+    }
+}
+
+.no-results {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    text-align: center;
+    align-items: center;
+    margin-top: 20%;
+    margin-bottom: 15%;
+    flex-direction: column;
+}
+
+.no-results-text {
+    margin-top: 2vh;
+    font-weight: 700;
+    letter-spacing: 2px;
+}

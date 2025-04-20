@@ -12,10 +12,11 @@
 .carousel-image {
     max-width: 100%;
     height: auto;
+    position: relative;
+    top: 15vh;
 }
 
 .carousel-slide.selected {
     border: 2px solid var(--primary-orange);
     /* Cor da borda quando selecionado */
 }
-

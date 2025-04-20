@@ -26,6 +26,8 @@ export interface Product {
     altura_cm?: number; // Novo campo para a altura em cm
     largura_cm?: number; // Novo campo para a largura em cm
     comprimento_cm?: number; // Novo campo para o comprimento em cm
+    videoUrl?: string; // Campo para a URL do vídeo
+    category?: string;
 }
 
 const DataProducts: Product[] = [
@@ -58,6 +60,71 @@ const DataProducts: Product[] = [
         altura_cm: 5,
         largura_cm: 24.89,
         comprimento_cm: 82.55,
+        category: 'shape',
+    },
+    {
+        id: 2,
+        name: 'Shape Skate Milk 8.0 Maple Canadense + Lixa',
+        priceFisica: 229.41,
+        priceJuridica: 285.00,
+        imageUrl: require("../../Assets/ProductsImg/ShapeSkateMilk8.0MapleCanadense+LixaEmborrachada_1.webp"),
+        secondaryImageUrl: require("../../Assets/ProductsImg/ShapeSkateMilk8.0MapleCanadense+LixaEmborrachada_2.webp"),
+        gallery: [
+            require("../../Assets/ProductsImg/ShapeSkateMilk8.0MapleCanadense+LixaEmborrachada_3.webp"),
+            require("../../Assets/ProductsImg/ShapeSkateToyMachineOldSchoolMaple+ChaveY_4.webp"),
+            require('../../Assets/ProductsImg/ShapeSkateMilk8.0MapleCanadense+LixaEmborrachada_4.mp4'), // Adicione a URL do vídeo ao gallery
+        ],
+        oldPrice: 350.00,
+        price: 310.00,
+        caracteristicas: {
+            marca: 'MILK SKATEBOARD',
+            modelo: 'Maple Canadense',
+            largura: '20,32 cm',
+            comprimento: '80,6 cm',
+            distanciaEntreEixos: '36,1 cm',
+            peso: "800g",
+            material: 'MAPLE CANADENSE',
+            quantidadeDeCamadas: 7,
+        },
+        productInfo: 'SHAPE MILK 8.0 MAPLE CANADENSE, LIXA EMBORRACHADA GRÁTIS',
+        description: 'Os Shapes Maple Milk são fabricados na fábrica BBS Manufacturing que também fazem os shapes da BAKER Skateboard, Real, Deathwish, DGK e outras marcas internacionais. Shape composto por 7 laminas de Maple Canadense calibradas , leve e resistente Shape super leve e resistente com muito Pop Shape Importado Marca: Milk Skateboards Modelo: Milk 100% Maple Canadense PRODUTO NOVO LACRADO',
+        peso_kg: 0.8,
+        altura_cm: 5,
+        largura_cm: 20.32,
+        comprimento_cm: 80.6,
+        category: 'shape',
+    },
+    {
+        id: 3,
+        name: 'Shape Skate Milk 8.10 Maple Canadense + Lixa Emborrachada ',
+        priceFisica: 229.41,
+        priceJuridica: 229.00,
+        imageUrl: require("../../Assets/ProductsImg/shapeSkateMilk8.10MapleCanadense+LixaEmborrachada_1.webp"),
+        secondaryImageUrl: require("../../Assets/ProductsImg/shapeSkateMilk8.10MapleCanadense+LixaEmborrachada_2.webp"),
+        gallery: [
+            require("../../Assets/ProductsImg/shapeSkateMilk8.10MapleCanadense+LixaEmborrachada_3.webp"),
+            // require("../../Assets/ProductsImg/shapeSkateMilk8.10MapleCanadense+LixaEmborrachada_4.webp"),
+            require('../../Assets/ProductsImg/shapeSkateMilk8.10MapleCanadense+LixaEmborrachada_4.mp4'), // Adicione a URL do vídeo ao gallery
+        ],
+        oldPrice: 269.00,
+        price: 229.00,
+        caracteristicas: {
+            marca: 'MILK SKATEBOARD',
+            modelo: 'Maple Canadense',
+            largura: '20,5 cm',
+            comprimento: '80,6 cm',
+            distanciaEntreEixos: '36,1 cm',
+            peso: "800g",
+            material: 'MAPLE CANADENSE',
+            quantidadeDeCamadas: 7,
+        },
+        productInfo: 'SHAPE MILK 8.0 MAPLE CANADENSE, LIXA EMBORRACHADA GRÁTIS',
+        description: 'Os Shapes Maple Milk são fabricados na fábrica BBS Manufacturing que também fazem os shapes da BAKER Skateboard, Real, Deathwish, DGK e outras marcas internacionais. Shape composto por 7 laminas de Maple Canadense calibradas , leve e resistente Shape super leve e resistente com muito Pop Shape Importado Marca: Milk Skateboards Modelo: Milk 100% Maple Canadense PRODUTO NOVO LACRADO',
+        peso_kg: 0.8,
+        altura_cm: 5,
+        largura_cm: 20.32,
+        comprimento_cm: 80.6,
+        category: 'shape',
     },
 ];
 

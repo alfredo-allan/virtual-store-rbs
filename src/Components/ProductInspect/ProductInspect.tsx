@@ -14,6 +14,7 @@ export interface ProductInspectProps {
         price: number;
         priceFisica?: number;
         priceJuridica?: number;
+        // videoUrl?: string; // Remova esta linha
     };
     onBack: () => void;
 }
@@ -67,6 +68,7 @@ const ProductInspect: React.FC<ProductInspectProps> = ({ product, onBack }) => {
                     selectedImage={selectedImage}
                     setSelectedImage={setSelectedImage}
                     isMobile={isMobile}
+                // videoUrl={product.videoUrl} // Remova esta linha
                 />
             </div>
         </div>

@@ -40,9 +40,16 @@ interface LoginData {
   senha: string;
 }
 
-export const loginClient = async (credentials: LoginData) => {
+export interface LoggedInUserResponse {
+  id: number;
+  nome: string;
+  email: string;
+  tipoPessoa?: 'fisica' | 'juridica';
+}
+
+export const loginClient = async (credentials: LoginData): Promise<LoggedInUserResponse> => {
   try {
-    const response = await axios.post(
+    const response = await axios.post<LoggedInUserResponse>(
       `${API_BASE_URL}/clients/login`,
       credentials
     );

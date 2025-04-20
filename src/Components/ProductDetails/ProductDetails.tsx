@@ -9,7 +9,7 @@ interface ProductDetailsProps {
 }
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
-    const [selectedImage, setSelectedImage] = useState(product.imageUrl);
+    const [selectedImage, setSelectedImage] = useState<string>(product.imageUrl || '');
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const { loggedInUser } = useAuth();
     const { addItem } = useShoppingBag();
@@ -45,6 +45,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     }, []);
 
     const allImages = [product.imageUrl, product.secondaryImageUrl, ...(product.gallery || [])].filter(Boolean) as string[];
+    const isVideo = (url: string) => /\.(mp4|webm|ogg)$/i.test(url.toLowerCase());
 
     return (
         <div className={styles['product-details']}>
@@ -52,24 +53,44 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             <div className={styles['product-gallery']}>
                 {isMobile ? (
                     <div className={styles['carousel']}>
-                        {allImages.map((img, index) => (
-                            <img key={index} src={img} alt={`Imagem ${index + 1}`} className={styles['carousel-img']} />
+                        {allImages.map((item, index) => (
+                            isVideo(item) ? (
+                                <video key={index} src={item} className={styles['carousel-img']} controls />
+                            ) : (
+                                <img key={index} src={item} alt={`Imagem ${index + 1}`} className={styles['carousel-img']} />
+                            )
                         ))}
                     </div>
                 ) : (
                     <>
-                        <div className={styles['main-image']}>
-                            <img src={selectedImage} alt={product.name} className={styles['main-image-img']} />
+                        <div className={styles['main-video']}>
+                            {isVideo(selectedImage) ? (
+                                <video controls className={styles['main-video-content']}>
+                                    <source src={selectedImage} type={`video/${selectedImage?.split('.').pop()}`} />
+                                    Seu navegador não suporta vídeos HTML5.
+                                </video>
+                            ) : (
+                                <img src={selectedImage} alt={product.name} className={styles['main-image-img']} />
+                            )}
                         </div>
                         <div className={styles['thumbnail-container']}>
-                            {allImages.map((img, index) => (
-                                <img
-                                    key={index}
-                                    src={img}
-                                    alt={`Thumb ${index + 1}`}
-                                    onClick={() => setSelectedImage(img)}
-                                    className={`${styles['thumbnail-img']} ${selectedImage === img ? styles['selected'] : ''}`}
-                                />
+                            {allImages.map((item, index) => (
+                                <React.Fragment key={index}>
+                                    {isVideo(item) ? (
+                                        <video
+                                            src={item}
+                                            onClick={() => setSelectedImage(item)}
+                                            className={`${styles['thumbnail-img']} ${selectedImage === item ? styles['selected'] : ''}`}
+                                        />
+                                    ) : (
+                                        <img
+                                            src={item}
+                                            alt={`Thumb ${index + 1}`}
+                                            onClick={() => setSelectedImage(item)}
+                                            className={`${styles['thumbnail-img']} ${selectedImage === item ? styles['selected'] : ''}`}
+                                        />
+                                    )}
+                                </React.Fragment>
                             ))}
                         </div>
                     </>

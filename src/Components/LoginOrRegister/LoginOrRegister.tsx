@@ -1,10 +1,11 @@
-import React, { useState, useCallback, useEffect } from 'react';
+// frontend/src/Components/LoginOrRegister/LoginOrRegister.tsx
+
+import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './LoginOrRegister.module.css';
 import { useAuth } from '../../Contexts/AuthContext';
-import logoRbs from '../../Assets/Img/logo-rbs-remove-bg.png';
-import { registerClient, loginClient } from './api'; // Importe as funções da API
-import ModalResponse from '../../Components/ModalResponse/ModalResponse'; // Importe o ModalResponse
+import { registerClient, loginClient } from './api';
+import ModalResponse from '../ModalResponse/ModalResponse';
 
 interface LoginOrRegisterProps {
     onLoginSuccess?: () => void;
@@ -21,7 +22,7 @@ interface RegistrationData {
     razao_social?: string;
     endereco?: {
         cep: string;
-        rua: string; // Adicionado o campo 'rua'
+        rua: string;
         numero: string;
         bairro: string;
         cidade: string;
@@ -39,7 +40,7 @@ const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({ onLoginSuccess, onReg
     const [cpf, setCpf] = useState('');
     const [cnpj, setCnpj] = useState('');
     const [cep, setCep] = useState('');
-    const [rua, setRua] = useState(''); // Estado para a rua
+    const [rua, setRua] = useState('');
     const [numeroCasa, setNumeroCasa] = useState('');
     const [bairro, setBairro] = useState('');
     const [cidade, setCidade] = useState('');
@@ -47,39 +48,30 @@ const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({ onLoginSuccess, onReg
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const { login } = useAuth();
-    const [showModal, setShowModal] = useState(false); // Estado para controlar a visibilidade do modal
-    const [modalTitle, setModalTitle] = useState(''); // Estado para o título do modal
-    const [modalMessage, setModalMessage] = useState(''); // Estado para a mensagem do modal
+    const [showModal, setShowModal] = useState(false);
+    const [modalTitle, setModalTitle] = useState('');
+    const [modalMessage, setModalMessage] = useState('');
 
     const formatPhone = useCallback((value: string) => {
-        const cleaned = value.replace(/\D/g, '').slice(0, 11); // Limita a 11 dígitos
+        const cleaned = value.replace(/\D/g, '').slice(0, 11);
         const match = cleaned.match(/^(\d{2})(\d{0,5})(\d{0,4})$/);
-        if (match) {
-            return `(${match[1]}) ${match[2]}${match[3] ? '-' + match[3] : ''}`;
-        }
-        return value;
+        return match ? `(${match[1]}) ${match[2]}${match[3] ? '-' + match[3] : ''}` : value;
     }, []);
 
     const formatCpf = useCallback((value: string) => {
-        const cleaned = value.replace(/\D/g, '').slice(0, 11); // Limita a 11 dígitos
+        const cleaned = value.replace(/\D/g, '').slice(0, 11);
         const match = cleaned.match(/^(\d{3})(\d{3})(\d{3})(\d{2})$/);
-        if (match) {
-            return `${match[1]}.${match[2]}.${match[3]}-${match[4]}`;
-        }
-        return value;
+        return match ? `${match[1]}.${match[2]}.${match[3]}-${match[4]}` : value;
     }, []);
 
     const formatCnpj = useCallback((value: string) => {
-        const cleaned = value.replace(/\D/g, '').slice(0, 14); // Limita a 14 dígitos
+        const cleaned = value.replace(/\D/g, '').slice(0, 14);
         const match = cleaned.match(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/);
-        if (match) {
-            return `${match[1]}.${match[2]}.${match[3]}/${match[4]}-${match[5]}`;
-        }
-        return value;
+        return match ? `${match[1]}.${match[2]}.${match[3]}/${match[4]}-${match[5]}` : value;
     }, []);
 
     const handleCepChange = useCallback(async (value: string) => {
-        const cleanedCep = value.replace(/\D/g, '').slice(0, 8); // Limita a 8 dígitos
+        const cleanedCep = value.replace(/\D/g, '').slice(0, 8);
         setCep(cleanedCep);
         if (cleanedCep.length === 8) {
             setLoading(true);
@@ -87,9 +79,10 @@ const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({ onLoginSuccess, onReg
                 const response = await fetch(`https://viacep.com.br/ws/${cleanedCep}/json/`);
                 const data = await response.json();
                 if (!data.erro) {
-                    setRua(data.logradouro || ''); // Preenche a rua
+                    setRua(data.logradouro || '');
                     setBairro(data.bairro || '');
                     setCidade(data.localidade || '');
+                    setError('');
                 } else {
                     setRua('');
                     setBairro('');
@@ -114,34 +107,14 @@ const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({ onLoginSuccess, onReg
         setLoading(true);
         setError('');
 
-        let userData: any;
-
-        if (isLogin) {
-            userData = { email, senha };
-        } else {
-            userData = {
-                nome,
-                telefone,
-                email,
-                senha,
-                endereco: {
-                    cep,
-                    rua, // Inclui a rua
-                    numero: numeroCasa,
-                    bairro,
-                    cidade,
-                },
-                ...(isPessoaJuridica ? { razao_social: razaoSocial, cnpj } : { cpf }),
-            } as RegistrationData;
-        }
+        const userData = { email, senha };
 
         try {
-            let response;
             if (isLogin) {
-                const loginResponse = await loginClient(userData); // Chama a função de login do api.ts
+                const loginResponse = await loginClient(userData);
                 console.log('Resposta de login:', loginResponse);
-                if (loginResponse?.user) {
-                    login(loginResponse.user);
+                if (loginResponse?.id) {
+                    login(loginResponse);
                     if (onLoginSuccess) {
                         onLoginSuccess();
                     } else {
@@ -149,26 +122,33 @@ const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({ onLoginSuccess, onReg
                     }
                 } else {
                     setModalTitle('Erro de Login');
-                    setModalMessage(loginResponse?.message || 'Erro ao fazer login.');
+                    setModalMessage((loginResponse as any)?.error || 'Erro ao fazer login.');
                     setShowModal(true);
                 }
             } else {
-                const registerResponse = await registerClient(userData as RegistrationData); // Chama a função de cadastro do api.ts
+                const registrationData: RegistrationData = {
+                    nome,
+                    telefone,
+                    email,
+                    senha,
+                    endereco: { cep, rua, numero: numeroCasa, bairro, cidade },
+                    ...(isPessoaJuridica ? { razao_social: razaoSocial, cnpj } : { cpf }),
+                };
+                const registerResponse = await registerClient(registrationData);
                 console.log('Resposta de cadastro:', registerResponse);
                 if (registerResponse?.message === 'Cliente registrado com sucesso') {
                     setModalTitle('Sucesso!');
                     setModalMessage('Cadastro realizado com sucesso!');
                     setShowModal(true);
-                    // Opcional: Redirecionar ou fazer algo após o sucesso
                 } else {
                     setModalTitle('Erro de Cadastro');
-                    setModalMessage(registerResponse?.message || 'Erro ao cadastrar.');
+                    setModalMessage(registerResponse?.error || registerResponse?.message || 'Erro ao cadastrar.');
                     setShowModal(true);
                 }
             }
         } catch (err: any) {
             setModalTitle('Erro na Requisição');
-            setModalMessage(err?.response?.data?.message || err?.message || 'Erro ao processar a requisição.');
+            setModalMessage(err?.response?.data?.error || err?.response?.data?.message || err?.message || 'Erro ao processar a requisição.');
             setShowModal(true);
             console.error('Erro na requisição:', err);
         } finally {
@@ -179,7 +159,7 @@ const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({ onLoginSuccess, onReg
     const handleCloseModal = () => {
         setShowModal(false);
         if (!isLogin && modalTitle === 'Sucesso!') {
-            setIsLogin(true); // Voltar para a tela de login após o cadastro
+            setIsLogin(true);
         }
     };
 
@@ -233,7 +213,7 @@ const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({ onLoginSuccess, onReg
                             value={formatCpf(cpf)}
                             onChange={(e) => setCpf(e.target.value)}
                             className={styles['form-input']}
-                            maxLength={14} // Limita o número de caracteres para o CPF formatado
+                            maxLength={14}
                         />
                         <input
                             type="tel"
@@ -241,7 +221,7 @@ const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({ onLoginSuccess, onReg
                             value={formatPhone(telefone)}
                             onChange={(e) => setTelefone(e.target.value)}
                             className={styles['form-input']}
-                            maxLength={15} // Limita o número de caracteres para o telefone formatado
+                            maxLength={15}
                         />
                     </>
                 )}
@@ -262,7 +242,7 @@ const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({ onLoginSuccess, onReg
                             value={formatCnpj(cnpj)}
                             onChange={(e) => setCnpj(e.target.value)}
                             className={styles['form-input']}
-                            maxLength={18} // Limita o número de caracteres para o CNPJ formatado
+                            maxLength={18}
                         />
                         <input
                             type="tel"
@@ -270,7 +250,7 @@ const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({ onLoginSuccess, onReg
                             value={formatPhone(telefone)}
                             onChange={(e) => setTelefone(e.target.value)}
                             className={styles['form-input']}
-                            maxLength={15} // Limita o número de caracteres para o telefone formatado
+                            maxLength={15}
                         />
                     </>
                 )}
@@ -283,7 +263,7 @@ const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({ onLoginSuccess, onReg
                             value={cep}
                             onChange={(e) => handleCepChange(e.target.value)}
                             className={styles['form-input']}
-                            maxLength={9} // Limita o número de caracteres para o CEP formatado
+                            maxLength={9}
                         />
                         <input
                             type="text"
