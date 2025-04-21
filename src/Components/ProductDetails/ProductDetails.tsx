@@ -55,7 +55,15 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                     <div className={styles['carousel']}>
                         {allImages.map((item, index) => (
                             isVideo(item) ? (
-                                <video key={index} src={item} className={styles['carousel-img']} controls />
+                                <video
+                                    key={index}
+                                    src={item}
+                                    className={styles['carousel-img']}
+                                    muted // Adiciona o atributo muted
+                                    autoPlay // Adiciona o atributo autoPlay
+                                    loop    // Adiciona o atributo loop
+                                    controls={false} // Remove os controles de reprodução
+                                />
                             ) : (
                                 <img key={index} src={item} alt={`Imagem ${index + 1}`} className={styles['carousel-img']} />
                             )
@@ -65,7 +73,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                     <>
                         <div className={styles['main-video']}>
                             {isVideo(selectedImage) ? (
-                                <video controls className={styles['main-video-content']}>
+                                <video
+                                    controls={false} // Remove os controles de reprodução
+                                    className={styles['main-video-content']}
+                                    muted // Adiciona o atributo muted
+                                    autoPlay // Adiciona o atributo autoPlay
+                                    loop    // Adiciona o atributo loop
+                                >
                                     <source src={selectedImage} type={`video/${selectedImage?.split('.').pop()}`} />
                                     Seu navegador não suporta vídeos HTML5.
                                 </video>
@@ -81,6 +95,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
                                             src={item}
                                             onClick={() => setSelectedImage(item)}
                                             className={`${styles['thumbnail-img']} ${selectedImage === item ? styles['selected'] : ''}`}
+                                            muted // Adiciona o atributo muted
+                                            autoPlay // Adiciona o atributo autoPlay
+                                            loop    // Adiciona o atributo loop
+                                            controls={false} // Remove os controles
                                         />
                                     ) : (
                                         <img

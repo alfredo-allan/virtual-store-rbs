@@ -183,7 +183,7 @@
 
 @media (max-width: 7668px) {
     .btn-logout {
-        left: -140px;
+        left: -109px;
     }
 }
 
@@ -207,7 +207,7 @@
 @media (max-width: 768px) {
     .content-item-count {
         position: relative;
-        left: -147px;
+        left: -128px;
         top: 16px;
     }
 }
@@ -393,7 +393,7 @@
     }
 
     .iteration-bag-ico {
-        left: -140px;
+        left: -125px;
     }
 
     .iteration-bag-text {
