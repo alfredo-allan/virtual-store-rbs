@@ -10,7 +10,7 @@ import masterIco from '../../Assets/Img/master-card-ico.svg';
 import eloIco from '../../Assets/Img/elo-ico.svg';
 import dinersIco from '../../Assets/Img/diners-ico.svg';
 import seloIco from '../../Assets/Img/recomenta-ico.webp';
-import rbsIco from '../../Assets/Img/rbs_logo.png';
+import rbsIco from '../../Assets/Img/logo-rbs-remove-bg.png';
 import pixIco from '../../Assets/Img/icons8-foto.svg';
 import rocketIco from '../../Assets/Img/rocket.png';
 

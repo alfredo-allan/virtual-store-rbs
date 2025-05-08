@@ -1,7 +1,7 @@
 .custon-header {
     background-color: var(--primary-black);
     font-family: var(--font-family) !important;
-    padding: 10px;
+    padding: 0px;
     position: fixed;
     /* Adiciona o posicionamento fixo */
     top: 0;
@@ -18,7 +18,7 @@
     margin: 0;
     margin-left: 0px;
     align-content: start;
-    width: 300px;
+    width: 240px;
     margin-left: -120px;
     height: auto;
     /* Ou um valor fixo se preferir */
@@ -181,7 +181,7 @@
     }
 }
 
-@media (max-width: 7668px) {
+@media (max-width: 768px) {
     .btn-logout {
         left: -109px;
     }

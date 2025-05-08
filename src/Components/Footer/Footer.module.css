@@ -11,7 +11,7 @@ footer {
 .newsletter-section,
 .institutional-section {
     background-color: var(--primary-black);
-    padding: 5px 410px;
+    padding: 5px 270px;
     overflow: hidden;
 }
 
@@ -152,6 +152,8 @@ footer {
     width: 190vh;
     text-align: center;
     font-size: small;
+    color: white;
+    font-weight: 700;
 }
 
 /* Barra com margem menor */
@@ -161,7 +163,7 @@ footer {
 }
 
 .social-section {
-    padding-left: 359px;
+    padding-left: 222px;
     margin-bottom: 5vh;
 }
 

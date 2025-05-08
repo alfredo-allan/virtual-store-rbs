@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './ProductInspectPage.module.css';
 import Header from '../../Components/Header/Header';
 import Footer from '../../Components/Footer/Footer';
@@ -10,11 +10,17 @@ const ProductInspectPage = () => {
     const { id } = useParams<{ id?: string }>();
     const navigate = useNavigate();
     const [product, setProduct] = useState<Product | undefined>(undefined);
+    const productGalleryRef = useRef<HTMLDivElement>(null); // Cria uma ref para a galeria no ProductDetails
 
     useEffect(() => {
         const foundProduct = DataProducts.find((p) => p.id === parseInt(id || '0'));
         setProduct(foundProduct);
-    }, [id]);
+
+        // Define o foco na galeria quando o produto é carregado e a ref está disponível
+        if (foundProduct && productGalleryRef.current) {
+            productGalleryRef.current.focus();
+        }
+    }, [id, productGalleryRef]); // Incluímos productGalleryRef como dependência
 
     const handleGoBack = () => {
         navigate('/');
@@ -33,7 +39,8 @@ const ProductInspectPage = () => {
                     <button className={styles['back-button']} onClick={handleGoBack}>← Voltar</button>
                 </div>
 
-                <ProductDetails product={product} />
+                {/* Passa a ref para o componente ProductDetails */}
+                <ProductDetails ref={productGalleryRef} product={product} />
 
                 <Footer />
             </div>
