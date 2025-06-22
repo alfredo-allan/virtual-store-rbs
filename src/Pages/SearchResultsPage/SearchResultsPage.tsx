@@ -35,27 +35,29 @@ const SearchResultsPage: React.FC = () => {
     return (
         <div className={styles['search-results-page']}>
             <Header />
-            <h1>Resultados da Busca</h1>
-            {results.length > 0 ? (
-                <div className={styles['product-list']}>
-                    {results.map(product => (
-                        <ProductCard
-                            key={product.id}
-                            product={product}
-                            icoHeart="❤️"
-                            onClick={handleProductClick}
-                        />
-                    ))}
-                    <div className={styles['content-footer']}>
-                        <Footer />
+
+            <main className={styles['main-content']}>
+                <h1>Resultados da Busca</h1>
+                {results.length > 0 ? (
+                    <div className={styles['product-list']}>
+                        {results.map(product => (
+                            <ProductCard
+                                key={product.id}
+                                product={product}
+                                icoHeart="❤️"
+                                onClick={handleProductClick}
+                            />
+                        ))}
                     </div>
-                </div>
-            ) : (
-                <div className={styles['no-results']}>
-                    <img src={sadIcon} alt="Nenhum resultado encontrado" className={styles['sad-icon']} />
-                    <p className={styles['no-results-text']}>Nenhum produto corresponde à sua busca.</p>
-                </div>
-            )}
+                ) : (
+                    <div className={styles['no-results']}>
+                        <img src={sadIcon} alt="Nenhum resultado encontrado" className={styles['sad-icon']} />
+                        <p className={styles['no-results-text']}>Nenhum produto corresponde à sua busca.</p>
+                    </div>
+                )}
+            </main>
+
+            <Footer />
         </div>
     );
 };
