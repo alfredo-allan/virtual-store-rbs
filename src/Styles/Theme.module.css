@@ -8,5 +8,5 @@
 
 html {
     background-color: var(--primary-black);
-    font-family: var(--font-family) !important;
+    font-family: var(--font-nunito) !important;
 }

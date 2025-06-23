@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    font-family: var(--font-family);
+    font-family: var(--font-nunito);
     overflow-y: hidden !important;
     position: fixed;
     top: 0;

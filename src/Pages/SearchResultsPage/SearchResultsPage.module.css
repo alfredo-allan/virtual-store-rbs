@@ -1,6 +1,6 @@
 .search-results-page {
     overflow: hidden !important;
-    font-family: var(--font-family);
+    font-family: var(--font-nunito);
 }
 
 .product-list {

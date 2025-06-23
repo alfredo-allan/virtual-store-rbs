@@ -5,7 +5,7 @@
     flex-direction: column;
     align-items: center;
     margin-top: 15%;
-    font-family: var(--font-family);
+    font-family: var(--font-nunito);
     color: white;
     margin-bottom: 20vh;
     z-index: 0;

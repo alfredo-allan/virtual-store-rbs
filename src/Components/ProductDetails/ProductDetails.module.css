@@ -3,7 +3,7 @@
     max-width: 1200px;
     margin: 0 auto;
     overflow: hidden;
-    font-family: var(--font-family);
+    font-family: var(--font-nunito);
 }
 
 .product-gallery {

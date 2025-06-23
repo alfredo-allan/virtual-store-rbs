@@ -1,6 +1,7 @@
 footer {
     overflow: hidden;
     background-color: var(--primary-black);
+    font-family: var(--font-nunito);
 }
 
 .footer-content {
@@ -38,7 +39,7 @@ footer {
 }
 
 .newsletter-title {
-    font-family: var(--font-family);
+    font-family: var(--font-nunito);
     color: white;
     font-weight: 900;
     letter-spacing: 1px;
@@ -49,7 +50,7 @@ footer {
     color: white;
     width: 274px;
     height: 44px;
-    font-family: var(--font-family);
+    font-family: var(--font-nunito);
     font-size: 15px;
     font-weight: 700;
     border: none;
@@ -64,7 +65,7 @@ footer {
     display: grid;
     grid-column-gap: 45px;
     grid-template-columns: repeat(6, auto);
-    font-family: var(--font-family);
+    font-family: var(--font-nunito);
 }
 
 .institutional-links b {
@@ -75,7 +76,7 @@ footer {
 
 .institutional-title {
     color: white;
-    font-family: var(--font-family);
+    font-family: var(--font-nunito);
     font-weight: bold;
 }
 
@@ -83,7 +84,7 @@ footer {
     width: 282px;
     height: 44px;
     border: none;
-    font-family: var(--font-family);
+    font-family: var(--font-nunito);
     color: var(--primary-black);
     margin-right: 10px;
     padding-left: 20px;
@@ -104,7 +105,7 @@ footer {
     display: flex;
     justify-content: center;
     text-wrap: nowrap;
-    font-family: var(--font-family);
+    font-family: var(--font-nunito);
     color: white;
     font-weight: 500;
     margin-top: 0px;
@@ -119,7 +120,8 @@ footer {
 
 .payment-ico {
     margin-right: 25px;
-    width: 30px;
+    width: 50px;
+    height: 30px;
 }
 
 .payment-info {
@@ -167,6 +169,17 @@ footer {
     margin-bottom: 5vh;
 }
 
+b {
+    cursor: pointer;
+    position: relative;
+    top: 5px;
+    line-height: 2.5;
+}
+
+b:hover {
+    color: #d1cfcf;
+}
+
 @media (max-width: 1200px) {
 
     .newsletter-section,
@@ -180,7 +193,9 @@ footer {
         grid-template-columns: repeat(3, auto);
         /* Reduz as colunas em telas menores */
         grid-row-gap: 10px;
+
         /* Adiciona espaço entre as linhas */
+
     }
 }
 
@@ -217,6 +232,8 @@ footer {
         /* Centraliza os ícones sociais */
     }
 }
+
+
 
 @media (max-width: 480px) {
     .institutional-links {
