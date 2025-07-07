@@ -124,6 +124,12 @@ footer {
     height: 30px;
 }
 
+@media (max-width: 768px) {
+    .payment-ico {
+        width: 40px;
+    }
+}
+
 .payment-info {
     display: flex;
     justify-content: end;

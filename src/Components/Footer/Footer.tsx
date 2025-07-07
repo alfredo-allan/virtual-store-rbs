@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import styles from './Footer.module.css';
 import icoInstagram from '../../Assets/Img/instagram.png';
 import icoFacebook from '../../Assets/Img/facebook-app-symbol.png';
@@ -133,7 +133,7 @@ function Footer() {
                     <hr className={styles['bar-content']} />
                 </div>
                 <div className={styles['company-info']}>
-                    <p className={styles['company-text']} >Somos a RBS representação skate dês de 2018 trazendo as melhores opções e soluções em produtos</p>
+                    <p className={styles['company-text']} >Somos a RBS Representação Skate dês de 2018 Trazendo as Melhores Opções e Soluções em Produtos</p>
                 </div>
             </div>
         </footer>
