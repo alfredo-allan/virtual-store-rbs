@@ -13,7 +13,7 @@ interface MelhorEnvioService {
   name: string;
   price: string;
   delivery_time: number;
-  delivery_time_unit?: string; // Tornado opcional para não quebrar
+  delivery_time_unit?: string;
   company?: {
     name?: string;
     picture?: string;
@@ -40,8 +40,27 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
   const [shippingError, setShippingError] = useState<string | null>(null);
 
   const freeShippingThreshold = 135;
-  const bagTotal = bagItems.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
-  const isFreeShipping = bagTotal >= freeShippingThreshold;
+  const subtotal = bagItems.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
+  const isFreeShipping = subtotal >= freeShippingThreshold;
+
+  const cheapestShipping = shippingOptionsFromApi.reduce((min, option) => {
+    const price = parseFloat(option.price);
+    return isNaN(price) ? min : (min === null || price < min ? price : min);
+  }, null as number | null);
+
+  const actualShippingCost = isFreeShipping ? 0 : (selectedShippingPrice ?? cheapestShipping);
+  const finalTotal = subtotal + (selectedShippingPrice ?? 0);
+
+  useEffect(() => {
+    if (cep.length === 8) setFormattedCep(`${cep.substring(0, 5)}-${cep.substring(5)}`);
+    else setFormattedCep(cep);
+  }, [cep]);
+
+  useEffect(() => {
+    if (formattedCep.length === 9 && bagItems.length > 0) {
+      handleCalculateShipping();
+    }
+  }, [bagItems, formattedCep]);
 
   const handleQuantityChange = (id: string | number, newQuantity: number) => {
     updateItemQuantity(id, Math.max(1, newQuantity));
@@ -52,64 +71,55 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
   };
 
   const handleCheckoutClick = () => {
+    const checkoutData = {
+      items: bagItems,
+      subtotal,
+      shipping: actualShippingCost,
+      total: finalTotal,
+      cep: formattedCep,
+    };
+    localStorage.setItem('checkoutData', JSON.stringify(checkoutData));
     navigate('/CartCheck');
   };
 
   const handleCepChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.replace(/\D/g, '');
-    if (value.length <= 8) {
-      setCep(value);
-    }
+    if (value.length <= 8) setCep(value);
   };
-
-  useEffect(() => {
-    if (cep) {
-      if (cep.length === 8) {
-        setFormattedCep(`${cep.substring(0, 5)}-${cep.substring(5)}`);
-      } else {
-        setFormattedCep(cep);
-      }
-    } else {
-      setFormattedCep('');
-    }
-  }, [cep]);
 
   const handleCalculateShipping = async () => {
-    if (formattedCep.length === 9) {
-      setIsCalculatingShipping(true);
-      setShowShippingOptions(false);
-      setShippingOptionsFromApi([]);
-      setShippingError(null);
-
-      try {
-        const shippingProducts = bagItems.map(item => ({
-          id: item.id,
-          name: item.name,
-          quantity: item.quantity,
-          weight: item.weight ?? 0.8,
-          length: item.length ?? 31,
-          height: item.height ?? 5,
-          width: item.width ?? 21,
-        }));
-
-        const shippingData = await calculateShipping(formattedCep, shippingProducts); // ✅ aqui é shippingProducts
-        setShippingOptionsFromApi(shippingData);
-        setShowShippingOptions(true);
-        setIsCepInvalid(false);
-      } catch (error: any) {
-        console.error("Erro ao calcular o frete:", error);
-        setShippingError("Não foi possível calcular o frete. Por favor, tente novamente.");
-        setShowShippingOptions(false);
-      } finally {
-        setIsCalculatingShipping(false);
-      }
-    } else {
-      setShowShippingOptions(false);
-      setSelectedShippingPrice(null);
+    if (formattedCep.length !== 9) {
       setIsCepInvalid(true);
+      return;
+    }
+
+    setIsCalculatingShipping(true);
+    setShippingOptionsFromApi([]);
+    setShippingError(null);
+
+    try {
+      const shippingProducts = bagItems.map(item => ({
+        id: item.id,
+        name: item.name,
+        quantity: item.quantity,
+        weight: (item.weight ?? 0.8) * item.quantity,
+        length: item.length ?? 31,
+        height: item.height ?? 5,
+        width: item.width ?? 21,
+      }));
+
+      const shippingData = await calculateShipping(formattedCep, shippingProducts);
+      setShippingOptionsFromApi(shippingData);
+      setShowShippingOptions(true);
+      setIsCepInvalid(false);
+    } catch (error) {
+      console.error('Erro ao calcular o frete:', error);
+      setShippingError('Erro ao calcular o frete.');
+      setShowShippingOptions(false);
+    } finally {
+      setIsCalculatingShipping(false);
     }
   };
-
 
   const handleShippingOptionSelect = (price: number | null) => {
     setSelectedShippingPrice(price);
@@ -118,10 +128,6 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
   const handleCloseModal = () => {
     setIsCepInvalid(false);
   };
-
-  const subtotal = bagTotal;
-  const actualShippingCost = isFreeShipping ? 0 : selectedShippingPrice;
-  const finalTotal = subtotal + (actualShippingCost ?? 0);
 
   const handleClearBagClick = () => {
     clearBag();
@@ -224,10 +230,20 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
                         onChange={() => handleShippingOptionSelect(parseFloat(option.price))}
                       />
                       <label htmlFor={`shipping-${option.id}`}>
-                        {option.name} - R$ {parseFloat(option.price).toFixed(2)} (Entrega em {option.delivery_time} {option.delivery_time_unit || 'dias'})
+                        {option.company?.picture && (
+                          <img
+                            src={option.company.picture}
+                            alt={option.company.name}
+                            className={styles['shipping-logo']}
+                          />
+                        )}
+                        <span>
+                          {option.name} - R$ {parseFloat(option.price).toFixed(2)} (Entrega em {option.delivery_time} {option.delivery_time_unit || 'dias'})
+                        </span>
                       </label>
                     </div>
                   ))}
+
                   <div className={styles['shipping-option']}>
                     <input
                       type="radio"
@@ -249,11 +265,19 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
             <div className={styles['summary-details']}>
               <div className={styles['summary-row']}>
                 <span>Subtotal</span>
-                <span>R$ {bagTotal.toFixed(2)}</span>
+                <span>R$ {subtotal.toFixed(2)}</span>
               </div>
+
+              {selectedShippingPrice !== null && (
+                <div className={styles['summary-row']}>
+                  <span>Frete</span>
+                  <span>R$ {selectedShippingPrice.toFixed(2)}</span>
+                </div>
+              )}
+
               <div className={`${styles['summary-row']} ${styles['total']}`}>
                 <span>Total</span>
-                <span>R$ {(bagTotal + (actualShippingCost ?? 0)).toFixed(2)}</span>
+                <span>R$ {finalTotal.toFixed(2)}</span>
               </div>
             </div>
 
