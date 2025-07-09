@@ -1,28 +1,33 @@
+// src/Components/BagSideMenu/BagSideMenu.tsx
 import React, { useState, useEffect } from 'react';
 import styles from './BagSideMenu.module.css';
 import trash from '../../Assets/Img/bin.png';
 import closeIcon from '../../Assets/Img/close-button.png';
-import { BagItem as ShoppingBagItem, useShoppingBag } from '../../Contexts/ShoppingBagContext'; // Renomeando para evitar conflito
+import { useShoppingBag } from '../../Contexts/ShoppingBagContext';
 import { useNavigate } from 'react-router-dom';
 import ModalResponse from '../../Components/ModalResponse/ModalResponse';
-import { calculateShipping } from './api'; // Importe a função da API
-
-export interface BagSideMenuProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onClearBag: () => void;
-}
+import { calculateShipping } from './api';
 
 interface MelhorEnvioService {
   id: number;
   name: string;
-  price: string; // A API retorna o preço como string
+  price: string;
   delivery_time: number;
-  delivery_time_unit: string;
+  delivery_time_unit?: string; // Tornado opcional para não quebrar
+  company?: {
+    name?: string;
+    picture?: string;
+  };
+}
+
+interface BagSideMenuProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onClearBag?: () => void;
 }
 
 const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }) => {
-  const { bagItems, removeItem, updateItemQuantity } = useShoppingBag(); // Usamos as funções do contexto
+  const { bagItems, removeItem, updateItemQuantity, clearBag } = useShoppingBag();
   const navigate = useNavigate();
 
   const [cep, setCep] = useState('');
@@ -31,8 +36,8 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
   const [selectedShippingPrice, setSelectedShippingPrice] = useState<number | null>(null);
   const [isCepInvalid, setIsCepInvalid] = useState(false);
   const [shippingOptionsFromApi, setShippingOptionsFromApi] = useState<MelhorEnvioService[]>([]);
-  const [isCalculatingShipping, setIsCalculatingShipping] = useState(false); // Novo estado de carregamento
-  const [shippingError, setShippingError] = useState<string | null>(null); // Estado para erros de frete
+  const [isCalculatingShipping, setIsCalculatingShipping] = useState(false);
+  const [shippingError, setShippingError] = useState<string | null>(null);
 
   const freeShippingThreshold = 135;
   const bagTotal = bagItems.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
@@ -77,7 +82,17 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
       setShippingError(null);
 
       try {
-        const shippingData = await calculateShipping(formattedCep, bagItems); // Passamos 'bagItems' diretamente
+        const shippingProducts = bagItems.map(item => ({
+          id: item.id,
+          name: item.name,
+          quantity: item.quantity,
+          weight: item.weight ?? 0.8,
+          length: item.length ?? 31,
+          height: item.height ?? 5,
+          width: item.width ?? 21,
+        }));
+
+        const shippingData = await calculateShipping(formattedCep, shippingProducts); // ✅ aqui é shippingProducts
         setShippingOptionsFromApi(shippingData);
         setShowShippingOptions(true);
         setIsCepInvalid(false);
@@ -95,6 +110,7 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
     }
   };
 
+
   const handleShippingOptionSelect = (price: number | null) => {
     setSelectedShippingPrice(price);
   };
@@ -103,16 +119,21 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
     setIsCepInvalid(false);
   };
 
-  const subtotal = bagItems.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
+  const subtotal = bagTotal;
   const actualShippingCost = isFreeShipping ? 0 : selectedShippingPrice;
   const finalTotal = subtotal + (actualShippingCost ?? 0);
+
+  const handleClearBagClick = () => {
+    clearBag();
+    if (onClearBag) onClearBag();
+  };
 
   return (
     <div className={`${styles['bag-side-menu']} ${isOpen ? styles['open'] : ''}`}>
       <div className={styles['menu-header']}>
         <h2 className={styles['menu-header-title']}>Minha sacola</h2>
         <button onClick={onClose} className={styles['close-button']}>
-          <img src={closeIcon} alt='botão de fechar' />
+          <img src={closeIcon} alt="botão de fechar" />
         </button>
       </div>
 
@@ -129,7 +150,7 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
         <>
           <div className={styles['menu-content']}>
             <ul className={styles['bag-items-list']}>
-              {bagItems.map((item) => (
+              {bagItems.map(item => (
                 <li key={item.id}>
                   <div className={styles['bag-item']}>
                     {item.imageUrl && (
@@ -158,7 +179,7 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
                       </div>
                     </div>
                     <button onClick={() => handleRemove(item.id)} className={styles['remove-button']}>
-                      <img src={trash} alt='icone lixeira' />
+                      <img src={trash} alt="icone lixeira" />
                     </button>
                   </div>
                 </li>
@@ -187,14 +208,12 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
                 </button>
               </div>
 
-              {shippingError && (
-                <p className={styles['shipping-error']}>{shippingError}</p>
-              )}
+              {shippingError && <p className={styles['shipping-error']}>{shippingError}</p>}
 
               {showShippingOptions && shippingOptionsFromApi.length > 0 && (
                 <div className={styles['shipping-options']}>
                   <h5>Opções de entrega:</h5>
-                  {shippingOptionsFromApi.map((option) => (
+                  {shippingOptionsFromApi.map(option => (
                     <div key={option.id} className={styles['shipping-option']}>
                       <input
                         type="radio"
@@ -205,7 +224,7 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
                         onChange={() => handleShippingOptionSelect(parseFloat(option.price))}
                       />
                       <label htmlFor={`shipping-${option.id}`}>
-                        {option.name} - R$ {parseFloat(option.price).toFixed(2)} (Entrega em {option.delivery_time} {option.delivery_time_unit})
+                        {option.name} - R$ {parseFloat(option.price).toFixed(2)} (Entrega em {option.delivery_time} {option.delivery_time_unit || 'dias'})
                       </label>
                     </div>
                   ))}
@@ -218,9 +237,7 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
                       checked={selectedShippingPrice === null}
                       onChange={() => handleShippingOptionSelect(null)}
                     />
-                    <label htmlFor="no-shipping">
-                      Não incluir frete agora
-                    </label>
+                    <label htmlFor="no-shipping">Não incluir frete agora</label>
                   </div>
                 </div>
               )}
@@ -232,11 +249,11 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
             <div className={styles['summary-details']}>
               <div className={styles['summary-row']}>
                 <span>Subtotal</span>
-                <span>R$ {bagTotal.toFixed(2)}</span> {/* Usando o valor recalculado */}
+                <span>R$ {bagTotal.toFixed(2)}</span>
               </div>
               <div className={`${styles['summary-row']} ${styles['total']}`}>
                 <span>Total</span>
-                <span>R$ {(bagTotal + (actualShippingCost ?? 0)).toFixed(2)}</span> {/* Usando o valor recalculado */}
+                <span>R$ {(bagTotal + (actualShippingCost ?? 0)).toFixed(2)}</span>
               </div>
             </div>
 
@@ -244,7 +261,7 @@ const BagSideMenu: React.FC<BagSideMenuProps> = ({ isOpen, onClose, onClearBag }
               <button onClick={handleCheckoutClick} className={styles['checkout-button']}>
                 Finalizar Compra
               </button>
-              <button onClick={onClearBag} className={styles['clear-bag-button']}>
+              <button onClick={handleClearBagClick} className={styles['clear-bag-button']}>
                 Limpar Sacola
               </button>
             </div>

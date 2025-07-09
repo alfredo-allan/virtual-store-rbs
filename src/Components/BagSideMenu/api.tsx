@@ -1,72 +1,72 @@
-// api.ts
-import { BagItem as ShoppingBagItem } from '../../Contexts/ShoppingBagContext';
+// src/Components/BagSideMenu/api.ts
+import axios from 'axios';
 
-const API_URL_SANDBOX = 'https://sandbox.melhorenvio.com.br/p/gG76mrq2jB';
-const ACCESS_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5NTYiLCJqdGkiOiJlYTIwZmIwN2Q1M2M5ODIxMWI5OGQxZWMzYTYxMDc0MzQ2YjJjNjAyZGI2YjZkMGJhZmE4ZmZiYmQyOTcyZWFkZTdhYWYzMmNiZjM0M2JiMyIsImlhdCI6MTc0NTA5NjAzNC45MjM2MzgsIm5iZiI6MTc0NTA5NjAzNC45MjM2NDEsImV4cCI6MTc3NjYzMjAzNC45MDUwNzUsInN1YiI6IjllYjZlMTRlLTY1NmItNDE5Zi1iNmQxLTE3ZDViNjI4ZGNlYSIsInNjb3BlcyI6WyJjYXJ0LXJlYWQiLCJjYXJ0LXdyaXRlIiwiY29tcGFuaWVzLXJlYWQiLCJjb21wYW5pZXMtd3JpdGUiLCJjb3Vwb25zLXJlYWQiLCJjb3Vwb25zLXdyaXRlIiwibm90aWZpY2F0aW9ucy1yZWFkIiwib3JkZXJzLXJlYWQiLCJwcm9kdWN0cy1yZWFkIiwicHJvZHVjdHMtZGVzdHJveSIsInByb2R1Y3RzLXdyaXRlIiwicHVyY2hhc2VzLXJlYWQiLCJzaGlwcGluZy1jYWxjdWxhdGUiLCJzaGlwcGluZy1jYW5jZWwiLCJzaGlwcGluZy1jaGVja291dCIsInNoaXBwaW5nLWNvbXBhbmllcyIsInNoaXBwaW5nLWdlbmVyYXRlIiwic2hpcHBpbmctcHJldmlldyIsInNoaXBwaW5nLXByaW50Iiwic2hpcHBpbmctc2hhcmUiLCJzaGlwcGluZy10cmFja2luZyIsImVjb21tZXJjZS1zaGlwcGluZyIsInRyYW5zYWN0aW9ucy1yZWFkIiwidXNlcnMtcmVhZCIsInVzZXJzLXdyaXRlIiwid2ViaG9va3MtcmVhZCIsIndlYmhvb2tzLXdyaXRlIiwid2ViaG9va3MtZGVsZXRlIiwidGRlYWxlci13ZWJob29rIl19.YFK242Q-ZWu_u-RV-Ep3CypdfiTHR1ow7lbgy5PORTNZ4F0e7AD1ZSIW1t58iAf2BIej45AQpruMriOm4Iai7k9Dgp4wNyLOoG7X521O7yjYU1ZQmdNGlZvGXygNhqrf4O8agsGrVAjf9XbcJ5CwDiyyISusMzU7dyuHnPWoxAqtK96wGiTnPkMf1GpxpqG9byNzaCmy8zFnDGZdRGeHkOwomnavzVH7yYsudTI4t1LiKQN88lCG63j_8RCFIMuafxI1quxvKSKU6N5di6FECUBMT0JY6-To1pYI5aLhLs6actEto6d_nqUtrS07zJMx5UuEqsMj4748MeI_WnXeCbvCIH6pjC2HyBeuJzicsTkqztJfG_u5efQM8Vm1zvJaOxJ_lkprHraqGeCDR2xCeXAgHOyEAcw2dQk1JJqoAOu35FnuWc9ivT2U-dVkcXs44HCtJdQU5IYAy6a78bjMxZ_0epAGQvOhRbIiCtqPna0M6OhSlbZP9M12EAlgMaElcrEmPc9HCF2w_g4KDzcZ0xWToxKTlplSKPDlLiHfcNEyi6wSCYcGKUfqZQrsH1doFgdTGh6bKqGzMrjM-bCamiOs96YlkqtzF6uVreXDMh_MnHLh2FxRuI9ArW7vvB22sAKV-A-g4c0Yvbvepvdvu7XYdefNPU4emRKkptMoXzo'; // Substitua pela sua chave real
-const EMAIL = 'kali.sonic.developer@gmail.com'; // Substitua pelo seu email real
-const CEP_ORIGEM = '04236-052'; // Substitua pelo seu CEP de origem real
+const api = axios.create({
+    baseURL: 'http://127.0.0.1:8000', // ajuste se for deployado
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    withCredentials: true, // se usar sessão/autenticação
+});
 
-export const calculateShipping = async (cep: string, bagItems: ShoppingBagItem[]) => {
+export interface ProductForShipping {
+    id: string | number;
+    name?: string;
+    quantity: number;
+    weight: number;
+    length: number;
+    height: number;
+    width: number;
+}
+
+export interface ShippingCompany {
+    id: number;
+    name: string;
+    picture: string;
+}
+
+export interface ShippingOption {
+    id: number;
+    name: string;
+    price: string;
+    delivery_time: number;
+    company: ShippingCompany;
+    error?: string; // caso a transportadora não atenda o trecho
+}
+
+export async function calculateShipping(
+    cep: string,
+    products: ProductForShipping[]
+): Promise<ShippingOption[]> {
     try {
-        console.log("Iniciando requisição de frete...");
-        console.log("URL:", `${API_URL_SANDBOX}/meus/cotacoes`);
-        console.log("CEP Destino:", cep);
-        console.log("Itens na sacola:", bagItems);
-        console.log("Token:", ACCESS_TOKEN ? 'Token presente' : 'Token ausente!');
-        console.log("Email:", EMAIL);
-        console.log("CEP Origem:", CEP_ORIGEM);
+        console.log('[api.ts] Enviando para cálculo de frete:', { cep, produtos: products });
 
-        const response = await fetch(`${API_URL_SANDBOX}/meus/cotacoes`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${ACCESS_TOKEN}`,
-                'X-Email': EMAIL,
-            },
-            body: JSON.stringify({
-                postal_code: CEP_ORIGEM,
-                destination: {
-                    postal_code: cep,
-                },
-                products: bagItems.map(item => ({
-                    name: item.name,
-                    quantity: item.quantity,
-                    weight: item.peso_kg || 0.1,
-                    width: item.largura_cm || 10,
-                    height: item.altura_cm || 5,
-                    length: item.comprimento_cm || 15,
-                })),
-                services: [],
-            }),
+        const response = await api.post('/shipping', {
+            cep,
+            produtos: products,
         });
 
-        console.log("Resposta da API:", response);
+        console.log('[api.ts] Resposta recebida:', response.data);
 
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error("Erro na requisição de frete (não OK):", response.status, errorText);
-            throw new Error(`Erro na cotação de frete: ${response.status} - ${errorText}`);
+        const data = response.data;
+
+        // Verifica se retornou lista válida
+        if (Array.isArray(data)) {
+            return data
+                .filter((item) => !item.error) // só retorna opções válidas
+                .map((item) => ({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    delivery_time: item.delivery_time,
+                    company: item.company,
+                }));
         }
 
-        const data = await response.json();
-        console.log("Dados da API:", data);
-        return data;
+        console.warn('[api.ts] Resposta inesperada da API:', data);
+        return [];
     } catch (error: any) {
-        console.error("Erro ao chamar a API de frete:", error);
-        throw error;
+        console.error('[api.ts] Erro ao calcular frete:', error.response?.data ?? error.message);
+        throw new Error('Erro ao calcular o frete. Veja o console.');
     }
-};
-
-export interface BagItem {
-    id: number | string;
-    name: string;
-    price?: number;
-    imageUrl?: string;
-    quantity: number;
-    color?: string;
-    size?: string;
-    peso_kg?: number;
-    altura_cm?: number;
-    largura_cm?: number;
-    comprimento_cm?: number;
 }

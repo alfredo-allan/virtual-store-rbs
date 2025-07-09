@@ -1,12 +1,11 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { AuthContextType, useAuth } from './AuthContext'; // Importe a interface e o hook
+import { useAuth } from './AuthContext'; // Só importei o hook, não a interface
 
-// Define a estrutura de um item na sacola
 export interface BagItem {
     id: string | number;
-    name: string; // Adicione outras propriedades conforme necessário
+    name: string;
     quantity: number;
-    [key: string]: any; // Permite outras propriedades dinamicamente
+    [key: string]: any;
 }
 
 interface ShoppingBagContextProps {
@@ -25,49 +24,52 @@ interface ShoppingBagProviderProps {
 
 export const ShoppingBagProvider: React.FC<ShoppingBagProviderProps> = ({ children }) => {
     const [bagItems, setBagItems] = useState<BagItem[]>([]);
-    const { loggedInUser } = useAuth(); // Use o hook personalizado para acessar o usuário
+    const { loggedInUser } = useAuth();
 
     useEffect(() => {
-        // Carregar a sacola do localStorage ao montar o componente
-        const storedBag = localStorage.getItem(`shoppingBag_${loggedInUser?.id}`);
-        if (storedBag && loggedInUser) {
-            setBagItems(JSON.parse(storedBag));
-        } else if (!loggedInUser) {
-            // Limpar a sacola se o usuário deslogar
+        if (loggedInUser) {
+            const storedBag = localStorage.getItem(`shoppingBag_${loggedInUser.id}`);
+            if (storedBag) {
+                setBagItems(JSON.parse(storedBag));
+            }
+        } else {
             setBagItems([]);
         }
     }, [loggedInUser]);
 
     useEffect(() => {
-        // Salvar a sacola no localStorage sempre que ela mudar e houver um usuário logado
         if (loggedInUser) {
             localStorage.setItem(`shoppingBag_${loggedInUser.id}`, JSON.stringify(bagItems));
         } else {
-            // Limpar o localStorage se não houver usuário logado
-            localStorage.removeItem(`shoppingBag_null`); // Use uma chave consistente para quando não há usuário
+            localStorage.removeItem(`shoppingBag_null`);
         }
     }, [bagItems, loggedInUser]);
 
     const addItem = (item: Omit<BagItem, 'quantity'> & { quantity?: number }) => {
-        setBagItems((prevItems) => {
+        setBagItems(prevItems => {
             const itemIndex = prevItems.findIndex(i => i.id === item.id);
             if (itemIndex > -1) {
                 const updatedItems = [...prevItems];
-                updatedItems[itemIndex] = { ...updatedItems[itemIndex], quantity: (updatedItems[itemIndex].quantity || 1) + (item.quantity || 1) };
+                const existingItem = updatedItems[itemIndex];
+                updatedItems[itemIndex] = {
+                    ...existingItem,
+                    quantity: (existingItem.quantity || 1) + (item.quantity || 1),
+                };
                 return updatedItems;
             }
-            return [...prevItems, { ...item, quantity: item.quantity || 1 } as BagItem];
+            return [...prevItems, { ...item, quantity: item.quantity ?? 1 } as BagItem];
         });
     };
 
+
     const removeItem = (itemId: string | number) => {
-        setBagItems((prevItems) => prevItems.filter(item => item.id !== itemId));
+        setBagItems(prev => prev.filter(item => item.id !== itemId));
     };
 
     const updateItemQuantity = (itemId: string | number, quantity: number) => {
-        setBagItems((prevItems) =>
-            prevItems.map(item =>
-                item.id === itemId ? { ...item, quantity: quantity } : item
+        setBagItems(prev =>
+            prev.map(item =>
+                item.id === itemId ? { ...item, quantity } : item
             )
         );
     };
@@ -77,19 +79,14 @@ export const ShoppingBagProvider: React.FC<ShoppingBagProviderProps> = ({ childr
     };
 
     return (
-        <ShoppingBagContext.Provider value={{
-            bagItems,
-            addItem,
-            removeItem,
-            updateItemQuantity,
-            clearBag,
-        }}>
+        <ShoppingBagContext.Provider
+            value={{ bagItems, addItem, removeItem, updateItemQuantity, clearBag }}
+        >
             {children}
         </ShoppingBagContext.Provider>
     );
 };
 
-// Hook personalizado para usar o contexto
 export const useShoppingBag = () => {
     const context = useContext(ShoppingBagContext);
     if (!context) {
